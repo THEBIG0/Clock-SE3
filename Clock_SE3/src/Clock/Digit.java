@@ -78,7 +78,9 @@ public class Digit extends javax.swing.JPanel {
         digitCell.setLayout(digitCellLayout);
         digitCellLayout.setHorizontalGroup(
             digitCellLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(digitLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+            .addGroup(digitCellLayout.createSequentialGroup()
+                .addComponent(digitLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         digitCellLayout.setVerticalGroup(
             digitCellLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
