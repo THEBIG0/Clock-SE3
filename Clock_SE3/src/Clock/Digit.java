@@ -7,15 +7,71 @@ package Clock;
 /**
  * @author sbrown
  */
-public class Digit extends javax.swing.JPanel {
-
-    /**
+public class Digit extends javax.swing.JComponent implements bgi.TouchDigit, bgi.TouchListener {
+ 
+    /*
      * Creates new form Digit
      */
     public Digit() {
         initComponents();
         this.digitLabel.setText("0");
     }
+    
+    /*
+     * Start methods required by touchDigit
+     */
+    
+    public void setDigit(int i){
+    }
+
+    public int getDigit(){
+        return Integer.valueOf(this.digitLabel.getText());
+    }
+
+    public void setText(String[] strings){
+        
+    }
+
+    public String[] getText(){
+        String[] list = {" "};
+        return list;
+    }
+
+    public void setTextAlignment(int i){
+        
+    }
+
+    public int getTextAlignment(){
+        int align = 0;
+        return align;
+    }
+
+    public void addTouchListener(bgi.TouchListener tl){
+        
+    }
+
+    public void removeTouchListener(bgi.TouchListener tl){
+        
+    }
+    
+    /*
+     * Start methods required by touchListener
+     */
+    public void touchInitiated(bgi.TouchEvent te){
+        
+    }
+
+    public void touchReleased(bgi.TouchEvent te){
+        
+    }
+
+    public void touchCancelled(bgi.TouchEvent te){
+        
+    }
+    
+    /*
+     * End of required methods
+     */
     
     /*
      * If current value is numerical, increment by mod(10) of current
@@ -78,9 +134,7 @@ public class Digit extends javax.swing.JPanel {
         digitCell.setLayout(digitCellLayout);
         digitCellLayout.setHorizontalGroup(
             digitCellLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(digitCellLayout.createSequentialGroup()
-                .addComponent(digitLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(digitLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         digitCellLayout.setVerticalGroup(
             digitCellLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,7 +145,9 @@ public class Digit extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
