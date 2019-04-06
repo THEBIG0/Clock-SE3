@@ -1,114 +1,151 @@
-/*
- * Single digit for use in ClockFrame or DigitTestBed
- * Functions: incrementDigit, decrementDigit, setChar(char)
- */
+
 package Clock;
+import bgi.*;
+import javax.swing.JLabel;
 
 /**
- * @author sbrown
+ * Single digit display for use in ClockFrame or TestClockDigit
+ * @author
  */
-public class Digit extends javax.swing.JComponent implements bgi.TouchDigit, bgi.TouchListener {
+public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
  
-    /*
-     * Creates new form Digit
+
+    /**
+     * Creates new Digit. Also initializes array of touchAreas
      */
     public Digit() {
         initComponents();
-        this.digitLabel.setText("0");
+        initStrings();
     }
+
+    /// Start of methods required by touchDigit
     
-    /*
-     * Start methods required by touchDigit
+     /**
+     * TODO add description
+     * @param 
      */
-    
+    @Override
     public void setDigit(int i){
+        this.currentDigit = i;
     }
 
+    /**
+     * TODO add description
+     */
+    @Override
     public int getDigit(){
-        return Integer.valueOf(this.digitLabel.getText());
-    }
-
-    public void setText(String[] strings){
+        return currentDigit;
         
     }
 
+     /**
+     * TODO add description
+     * @param 
+     */    
+    @Override
+    public void setText(String[] text){
+        for (int i = 0; i < text.length; i++){
+        touchAreas[i].setText(text[i]);
+        }
+    }
+    
+     /**
+     * TODO add description
+     * @param 
+     */
+    @Override
     public String[] getText(){
         String[] list = {" "};
         return list;
     }
-
+    
+     /**
+     * TODO add description
+     * @param 
+     */
+    @Override
     public void setTextAlignment(int i){
-        
+        for (JLabel touchArea : touchAreas){
+            touchArea.setHorizontalTextPosition(i);
+        }
     }
 
+     /**
+     * TODO add description
+     * @param 
+     */    
+    @Override
     public int getTextAlignment(){
-        int align = 0;
-        return align;
+        return this.s0.getVerticalTextPosition();
     }
+    
+    /**
+     * these TouchListener methods are not used yet.
+     * Kept in for interface requirements
+     */  
+    @Override
+    public synchronized void addTouchListener(TouchListener touchListener) {}
 
-    public void addTouchListener(bgi.TouchListener tl){
-        
-    }
+    @Override
+    public synchronized void removeTouchListener(TouchListener touchListener) {}
 
-    public void removeTouchListener(bgi.TouchListener tl){
-        
-    }
+    /// End of methods required by TouchListener interface
     
-    /*
-     * Start methods required by touchListener
+    /**
+     * overloads required setText
+     * TODO add description
+     * @param 
      */
-    public void touchInitiated(bgi.TouchEvent te){
-        
-    }
-
-    public void touchReleased(bgi.TouchEvent te){
-        
-    }
-
-    public void touchCancelled(bgi.TouchEvent te){
-        
+    public void setText(String text, int index){
+        this.touchAreas[index].setText(text);
     }
     
-    /*
-     * End of required methods
+    /**
+     * overloads required setText
+     * TODO add description
      */
-    
-    /*
-     * If current value is numerical, increment by mod(10) of current
-     * displayed value. Otherwise, set digit to 0;
-     */
-    public void incrementDigit() {
-        char currentChar = this.digitLabel.getText().charAt(0);
-        if(Character.isDigit(currentChar)){
-            int nextDigit = (Character.getNumericValue(currentChar) + 1) % 10;
-            this.digitLabel.setText(String.valueOf(nextDigit));
-        } else {
-            this.digitLabel.setText("0");
-        }
+    public void setText(){
+        this.setText(this.touchText);
     }
     
-    /*
-     * If current value is numerical, decrement by mod(10) of current
-     * displayed value. Otherwise, set digit to 0;
+    /**
+     * TODO add description
+     * @param 
      */
-    public void decrementDigit() {
-        char currentChar = this.digitLabel.getText().charAt(0);
-        
-        if(Character.isDigit(currentChar)) {
-            // java modulo function includes +- the divisor, so 9 is added
-            // to emulate decrementing
-            int nextDigit = (Character.getNumericValue(currentChar) + 9) % 10;
-            this.digitLabel.setText(String.valueOf(nextDigit));
-        } else {
-            this.digitLabel.setText("0");
-        }
-    }
-    
-    public void setChar(char in) {
+    public void showChar(char in) {
         this.digitLabel.setText(String.valueOf(in));
     }
 
-
+    /**
+     * TODO add description
+     */
+    public void hideDigit() {
+        this.showChar(' ');
+    }
+    
+    /**
+     * TODO add description
+     */
+    public void showDigit() {
+        this.digitLabel.setText(String.valueOf(currentDigit));
+    }
+    
+    public void setTestMode(boolean mode) {
+        this.testMode = mode;
+    }
+    
+    /**
+     * TODO add description
+     */
+    private void initStrings(){
+        touchText = new String[11];
+        touchAreas = new JLabel[]
+        {this.s0, this.s1, this.s2, this.s3, this.s4, this.s5, this.s6, this.s7, this.s8, this.s9, this.s10};
+        for(int i = 0; i < this.touchAreas.length; i++){
+            this.touchText[i] = ("Section " + i);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -118,46 +155,268 @@ public class Digit extends javax.swing.JComponent implements bgi.TouchDigit, bgi
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        digitCell = new java.awt.Panel();
         digitLabel = new javax.swing.JLabel();
+        jLayeredPane1 = new javax.swing.JLayeredPane();
+        jPanel2 = new javax.swing.JPanel();
+        s0 = new javax.swing.JLabel();
+        s1 = new javax.swing.JLabel();
+        s2 = new javax.swing.JLabel();
+        s3 = new javax.swing.JLabel();
+        s4 = new javax.swing.JLabel();
+        s5 = new javax.swing.JLabel();
+        s6 = new javax.swing.JLabel();
+        s7 = new javax.swing.JLabel();
+        s8 = new javax.swing.JLabel();
+        s9 = new javax.swing.JLabel();
+        s10 = new javax.swing.JLabel();
 
-        digitCell.setBackground(new java.awt.Color(0, 0, 0));
-        digitCell.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setPreferredSize(new java.awt.Dimension(72, 144));
 
-        digitLabel.setFont(new java.awt.Font("Tahoma", 0, 120)); // NOI18N
+        digitLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 120)); // NOI18N
         digitLabel.setForeground(new java.awt.Color(51, 255, 0));
         digitLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        digitLabel.setText("3");
+        digitLabel.setText("0");
         digitLabel.setToolTipText("");
+        digitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                digitLabelMouseClicked(evt);
+            }
+        });
 
-        javax.swing.GroupLayout digitCellLayout = new javax.swing.GroupLayout(digitCell);
-        digitCell.setLayout(digitCellLayout);
-        digitCellLayout.setHorizontalGroup(
-            digitCellLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(digitLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel2.setOpaque(false);
+
+        s0.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s0.setForeground(new java.awt.Color(51, 255, 0));
+        s0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s0.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s0.setInheritsPopupMenu(false);
+        s0.setMaximumSize(new java.awt.Dimension(72, 13));
+        s0.setMinimumSize(new java.awt.Dimension(72, 13));
+        s0.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s1.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s1.setForeground(new java.awt.Color(51, 255, 0));
+        s1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s1.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s1.setInheritsPopupMenu(false);
+        s1.setMaximumSize(new java.awt.Dimension(72, 13));
+        s1.setMinimumSize(new java.awt.Dimension(72, 13));
+        s1.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s2.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s2.setForeground(new java.awt.Color(51, 255, 0));
+        s2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s2.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s2.setInheritsPopupMenu(false);
+        s2.setMaximumSize(new java.awt.Dimension(72, 13));
+        s2.setMinimumSize(new java.awt.Dimension(72, 13));
+        s2.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s3.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s3.setForeground(new java.awt.Color(51, 255, 0));
+        s3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s3.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s3.setInheritsPopupMenu(false);
+        s3.setMaximumSize(new java.awt.Dimension(72, 13));
+        s3.setMinimumSize(new java.awt.Dimension(72, 13));
+        s3.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s4.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s4.setForeground(new java.awt.Color(51, 255, 0));
+        s4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s4.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s4.setInheritsPopupMenu(false);
+        s4.setMaximumSize(new java.awt.Dimension(72, 13));
+        s4.setMinimumSize(new java.awt.Dimension(72, 13));
+        s4.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s5.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s5.setForeground(new java.awt.Color(51, 255, 0));
+        s5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s5.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s5.setInheritsPopupMenu(false);
+        s5.setMaximumSize(new java.awt.Dimension(72, 13));
+        s5.setMinimumSize(new java.awt.Dimension(72, 13));
+        s5.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s6.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s6.setForeground(new java.awt.Color(51, 255, 0));
+        s6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s6.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s6.setInheritsPopupMenu(false);
+        s6.setMaximumSize(new java.awt.Dimension(72, 13));
+        s6.setMinimumSize(new java.awt.Dimension(72, 13));
+        s6.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s7.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s7.setForeground(new java.awt.Color(51, 255, 0));
+        s7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s7.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s7.setInheritsPopupMenu(false);
+        s7.setMaximumSize(new java.awt.Dimension(72, 13));
+        s7.setMinimumSize(new java.awt.Dimension(72, 13));
+        s7.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s8.setBackground(new java.awt.Color(255, 51, 51));
+        s8.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s8.setForeground(new java.awt.Color(51, 255, 0));
+        s8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s8.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s8.setInheritsPopupMenu(false);
+        s8.setMaximumSize(new java.awt.Dimension(72, 13));
+        s8.setMinimumSize(new java.awt.Dimension(72, 13));
+        s8.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s9.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s9.setForeground(new java.awt.Color(51, 255, 0));
+        s9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s9.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s9.setInheritsPopupMenu(false);
+        s9.setMaximumSize(new java.awt.Dimension(72, 13));
+        s9.setMinimumSize(new java.awt.Dimension(72, 13));
+        s9.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        s10.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        s10.setForeground(new java.awt.Color(51, 255, 0));
+        s10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        s10.setBounds(new java.awt.Rectangle(1, 1, 1, 1));
+        s10.setInheritsPopupMenu(false);
+        s10.setMaximumSize(new java.awt.Dimension(72, 13));
+        s10.setMinimumSize(new java.awt.Dimension(72, 13));
+        s10.setPreferredSize(new java.awt.Dimension(72, 13));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(s0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(s10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
-        digitCellLayout.setVerticalGroup(
-            digitCellLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(digitLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(s0, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s2, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s4, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s5, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(s6, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s7, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s8, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s9, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(s10, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        jLayeredPane1.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
+        jLayeredPane1.setLayout(jLayeredPane1Layout);
+        jLayeredPane1Layout.setHorizontalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        jLayeredPane1Layout.setVerticalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        setLayer(digitLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        setLayer(jLayeredPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(digitLabel)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(digitLabel)
+                .addGap(0, 3, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-
+    private void digitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_digitLabelMouseClicked
+        pressHistory = evt.getY()/13;
+        if(testMode) {
+            this.s10.setText("Pressed " + pressHistory);
+        }
+    }//GEN-LAST:event_digitLabelMouseClicked
+                
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Panel digitCell;
     private javax.swing.JLabel digitLabel;
+    private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel s0;
+    private javax.swing.JLabel s1;
+    private javax.swing.JLabel s10;
+    private javax.swing.JLabel s2;
+    private javax.swing.JLabel s3;
+    private javax.swing.JLabel s4;
+    private javax.swing.JLabel s5;
+    private javax.swing.JLabel s6;
+    private javax.swing.JLabel s7;
+    private javax.swing.JLabel s8;
+    private javax.swing.JLabel s9;
     // End of variables declaration//GEN-END:variables
+    
+
+    /**
+     * Array of JLabels, to be populated with touchable sections
+     */
+    private javax.swing.JLabel[] touchAreas;
+    /**
+     * String array to hold text shown in touchable sections
+     */
+    private String[] touchText;
+    /**
+     * Stores current digit (note that any char displayed is temporary
+     * and overwritten with currentDigit whenever showDigit() is called
+     */
+    private int currentDigit;
+    /**
+     * Stores index of last pressed touchable section
+     */
+    protected int pressHistory;
+    /**
+     * Determines whether or not touched areas are announced lower edge of digit
+     */
+    private boolean testMode = false;
 }
