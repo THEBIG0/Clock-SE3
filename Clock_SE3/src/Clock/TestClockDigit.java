@@ -163,10 +163,6 @@ public class TestClockDigit extends javax.swing.JFrame {
         digit.showDigit();
     }//GEN-LAST:event_decButtonActionPerformed
     
-    private void charFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_charFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_charFieldActionPerformed
-
     /**
      * Calls setChar method of digit ONLY with the first character of the input.
      * Also removes extra characters from field
