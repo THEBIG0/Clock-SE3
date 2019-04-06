@@ -21,8 +21,8 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     /// Start of methods required by touchDigit
     
      /**
-     * Sets the digit to whatever the current digit is
-     * @param i - the value of current digit
+     * Sets the current stored digit to i
+     * @param i - the value to be set
      */
     @Override
     public void setDigit(int i){
@@ -30,7 +30,7 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     }
 
     /**
-     * Gets the current digit
+     * Gets the current stored digit
      * @return the value of currentDigit
      */
     @Override
@@ -40,8 +40,8 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     }
 
      /**
-     * For each element in text, set the touch area to the value of text
-     * @param text - empty string
+     * For each element in text, set the touch area display text to the corresponding value of text
+     * @param text - string array
      */    
     @Override
     public void setText(String[] text){
@@ -51,18 +51,17 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     }
     
      /**
-     * Stores a list of strings {"Hide digit", "Hide Text"}
-     * @return list of empty strings
+     * 
+     * @return list of strings currently displayed
      */
     @Override
     public String[] getText(){
-        String[] list = {" "};
-        return list;
+        return touchText;
     }
     
      /**
      * For each touchArea set the horizontal text position 
-     * @param i - increments by 1
+     * @param i - defined ints LEFT, CENTRE, RIGHT
      */
     @Override
     public void setTextAlignment(int i){
@@ -72,12 +71,12 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     }
 
      /**
-     * Aligns the text vertically
-     * @return first touch area's vertical text position
+     * Aligns the text horizontally
+     * @return first touch area's horizontal text position
      */    
     @Override
     public int getTextAlignment(){
-        return this.s0.getVerticalTextPosition();
+        return this.s0.getHorizontalTextPosition();
     }
     
     /**
@@ -94,9 +93,9 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     
     /**
      * overloads required setText
-     * sets the text based on the value of the touchAreas index
-     * @param text - "Section"
-     * @param index - value of pressHistory
+     * sets the text of touchArea corresponding to the index
+     * @param text - String to replace touchArea text with
+     * @param index - integer index of touchArea to change
      */
     public void setText(String text, int index){
         this.touchAreas[index].setText(text);
@@ -111,22 +110,22 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     }
     
     /**
-     * shows the char passed in by input via Set button
-     * @param in - value of input
+     * Shows a character on digit display temporarily. Replaced by currentDigit when updataed
+     * @param in - Character to be displayed
      */
     public void showChar(char in) {
         this.digitLabel.setText(String.valueOf(in));
     }
 
     /**
-     * calls showChar with empty character
+     * Hides digit display by showing a space
      */
     public void hideDigit() {
         this.showChar(' ');
     }
     
     /**
-     * shows the value of currentDigit
+     * Updates the display to show the value of currentDigit
      */
     public void showDigit() {
         this.digitLabel.setText(String.valueOf(currentDigit));
