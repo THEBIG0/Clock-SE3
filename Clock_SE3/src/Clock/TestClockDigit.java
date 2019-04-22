@@ -3,18 +3,18 @@ package Clock;
 /*
  * Testing environment for checking simple functions of digit class.
  */
+import bgi.TouchEvent;
 
 /**
  * @author sbrown
  */
-public class TestClockDigit extends javax.swing.JFrame {
+public class TestClockDigit extends javax.swing.JFrame{
 
     /**
      * Creates new form DigitTestBed
      */
     public TestClockDigit() {
         initComponents();
-        this.digit.setTestMode(true);
     }
 
     /*
@@ -32,6 +32,7 @@ public class TestClockDigit extends javax.swing.JFrame {
         hideButton = new javax.swing.JButton();
         incButton = new javax.swing.JButton();
         decButton = new javax.swing.JButton();
+        touchReadout = new javax.swing.JLabel();
         digitCell = new javax.swing.JPanel();
         digit = new Clock.Digit();
 
@@ -49,6 +50,10 @@ public class TestClockDigit extends javax.swing.JFrame {
         });
 
         hideButton.setLabel("Hide digit");
+        hideButton.setMaximumSize(new java.awt.Dimension(44, 32));
+        hideButton.setMinimumSize(new java.awt.Dimension(44, 32));
+        hideButton.setPreferredSize(new java.awt.Dimension(44, 32));
+        hideButton.setSize(new java.awt.Dimension(44, 0));
         hideButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hideButtonActionPerformed(evt);
@@ -56,6 +61,7 @@ public class TestClockDigit extends javax.swing.JFrame {
         });
 
         incButton.setText("▲");
+        incButton.setPreferredSize(new java.awt.Dimension(44, 32));
         incButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 incButtonActionPerformed(evt);
@@ -69,94 +75,101 @@ public class TestClockDigit extends javax.swing.JFrame {
             }
         });
 
+        touchReadout.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        touchReadout.setText("Touched");
+        touchReadout.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         javax.swing.GroupLayout controlPanelLayout = new javax.swing.GroupLayout(controlPanel);
         controlPanel.setLayout(controlPanelLayout);
         controlPanelLayout.setHorizontalGroup(
             controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(controlPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(incButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(decButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, controlPanelLayout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(charField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(manualSetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(hideButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(controlPanelLayout.createSequentialGroup()
+                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(incButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(controlPanelLayout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(charField, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(manualSetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(controlPanelLayout.createSequentialGroup()
+                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(hideButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(touchReadout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(decButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         controlPanelLayout.setVerticalGroup(
             controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(controlPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(incButton)
+                .addComponent(incButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(decButton)
+                .addComponent(decButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(hideButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hideButton)
-                .addGap(7, 7, 7)
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(charField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(manualSetButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(charField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(manualSetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(touchReadout, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
 
         digitCell.setBackground(new java.awt.Color(0, 0, 0));
+        digitCell.setPreferredSize(new java.awt.Dimension(154, 308));
+        digitCell.setSize(new java.awt.Dimension(154, 308));
+        digitCell.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout digitCellLayout = new javax.swing.GroupLayout(digitCell);
-        digitCell.setLayout(digitCellLayout);
-        digitCellLayout.setHorizontalGroup(
-            digitCellLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, digitCellLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(digit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        digitCellLayout.setVerticalGroup(
-            digitCellLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, digitCellLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(digit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        digit.addTouchListener(new bgi.TouchListener() {
+            public void touchInitiated(bgi.TouchEvent evt) {
+            }
+            public void touchReleased(bgi.TouchEvent evt) {
+                digitTouchReleased(evt);
+            }
+            public void touchCancelled(bgi.TouchEvent evt) {
+            }
+        });
+        digitCell.add(digit, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(21, 21, 21)
                 .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addGap(34, 34, 34)
                 .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     
     private void incButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incButtonActionPerformed
         int currentDigit = digit.getDigit();
         digit.setDigit((currentDigit + 1) % 10);
-        digit.showDigit();
     }//GEN-LAST:event_incButtonActionPerformed
 
     private void decButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decButtonActionPerformed
         int currentDigit = digit.getDigit();
+        if (currentDigit == -1) currentDigit++;
         digit.setDigit((currentDigit + 9) % 10);
-        digit.showDigit();
     }//GEN-LAST:event_decButtonActionPerformed
     
     /**
@@ -166,27 +179,28 @@ public class TestClockDigit extends javax.swing.JFrame {
     private void manualSetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manualSetButtonActionPerformed
         char parsedChar = this.charField.getText().charAt(0);
         this.charField.setText(String.valueOf(parsedChar));
-        if (Character.isDigit(parsedChar)){
-            digit.setDigit(Integer.valueOf(parsedChar) + 2);
-            digit.showDigit();
-        }
-        digit.showChar(parsedChar);
+        digit.setChar(parsedChar);
     }//GEN-LAST:event_manualSetButtonActionPerformed
 
     /**
-     * toggle button
+     * toggle button to hide/show digit
      */
     private void hideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideButtonActionPerformed
-        if (this.hideButton.getText() == "Hide digit"){
-            this.digit.showChar(' ');
-            this.hideButton.setText("Hide text");
-            this.digit.setText();
+        if (hideButton.getText().equals("Hide digit")){
+            digit.setChar(' ');
+            hideButton.setText("Hide text");
+            String[] str = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+            digit.setText(str);
         }   else {
-            this.digit.showDigit();
-            this.hideButton.setText("Hide digit");
-            this.digit.setText(new String[11]);
+            digit.setDigit(0);
+            digit.clearText();
+            hideButton.setText("Hide digit");
         }
     }//GEN-LAST:event_hideButtonActionPerformed
+
+    private void digitTouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digitTouchReleased
+        touchReadout.setText("Touched " + evt.getTouched());
+    }//GEN-LAST:event_digitTouchReleased
 
     /**
      * @param args the command line arguments
@@ -218,6 +232,7 @@ public class TestClockDigit extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new TestClockDigit().setVisible(true);
             }
@@ -233,5 +248,6 @@ public class TestClockDigit extends javax.swing.JFrame {
     private javax.swing.JButton hideButton;
     private javax.swing.JButton incButton;
     private javax.swing.JButton manualSetButton;
+    private javax.swing.JLabel touchReadout;
     // End of variables declaration//GEN-END:variables
 }
