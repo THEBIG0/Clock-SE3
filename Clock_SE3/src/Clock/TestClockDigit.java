@@ -4,11 +4,7 @@ package Clock;
  * Testing environment for checking simple functions of digit class.
  */
 import bgi.TouchEvent;
-import java.time.LocalTime;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.awt.event.*;
-import javax.swing.*;
+
 /**
  * @author sbrown
  */
@@ -20,22 +16,7 @@ public class TestClockDigit extends javax.swing.JFrame{
     public TestClockDigit() {
         initComponents();
     }
-     //gets current time, should be in run() so it gets in real time, but variable doesnt update in SetTime() or on button press  
-     LocalTime currentTime = LocalTime.now();
-     int hour = currentTime.getHour();
-     int minutes = currentTime.getMinute();
-     int seconds = currentTime.getSecond(); 
-     
-     //gets second digit in clock: example 12:34
-     //gets 2
-     int dig1 = hour % 10;
-     //gets last digit in clock: example 12:34
-     //gets 4
-     int dig3 = minutes % 10;
-     
-     int dig0 = hour;
-     int dig2 = minutes;
-    
+
     /*
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,11 +35,6 @@ public class TestClockDigit extends javax.swing.JFrame{
         touchReadout = new javax.swing.JLabel();
         digitCell = new javax.swing.JPanel();
         digit = new Clock.Digit();
-        digit4 = new Clock.Digit();
-        digit1 = new Clock.Digit();
-        digit2 = new Clock.Digit();
-        digit3 = new Clock.Digit();
-        digit5 = new Clock.Digit();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,6 +53,7 @@ public class TestClockDigit extends javax.swing.JFrame{
         hideButton.setMaximumSize(new java.awt.Dimension(44, 32));
         hideButton.setMinimumSize(new java.awt.Dimension(44, 32));
         hideButton.setPreferredSize(new java.awt.Dimension(44, 32));
+        hideButton.setSize(new java.awt.Dimension(44, 0));
         hideButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hideButtonActionPerformed(evt);
@@ -117,7 +94,7 @@ public class TestClockDigit extends javax.swing.JFrame{
                                 .addComponent(charField, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(manualSetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(6, 10, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(controlPanelLayout.createSequentialGroup()
                         .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(hideButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -138,36 +115,26 @@ public class TestClockDigit extends javax.swing.JFrame{
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(charField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(manualSetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(touchReadout, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
 
         digitCell.setBackground(new java.awt.Color(0, 0, 0));
         digitCell.setPreferredSize(new java.awt.Dimension(154, 308));
+        digitCell.setSize(new java.awt.Dimension(154, 308));
         digitCell.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         digit.addTouchListener(new bgi.TouchListener() {
+            public void touchInitiated(bgi.TouchEvent evt) {
+            }
             public void touchReleased(bgi.TouchEvent evt) {
                 digitTouchReleased(evt);
             }
             public void touchCancelled(bgi.TouchEvent evt) {
             }
-            public void touchInitiated(bgi.TouchEvent evt) {
-            }
         });
         digitCell.add(digit, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        digit4.addTouchListener(new bgi.TouchListener() {
-            public void touchReleased(bgi.TouchEvent evt) {
-                digit4TouchReleased(evt);
-            }
-            public void touchCancelled(bgi.TouchEvent evt) {
-            }
-            public void touchInitiated(bgi.TouchEvent evt) {
-            }
-        });
-        digitCell.add(digit4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -176,107 +143,27 @@ public class TestClockDigit extends javax.swing.JFrame{
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(digit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(digit5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(digit2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(digit3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(34, 34, 34)
                 .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(digit5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(digit3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(digit2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(digit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public void setDigits()
-    {
-        //gets first digit in clock: example 12:42
-        //gets 1
-        while(dig0 >= 10)
-        {
-            dig0 /= 10;
-        }
-       
-         //gets third digit in clock: example 12:42
-        //gets 4
-         while(dig2 >= 10)
-        {
-            dig2 /= 10;
-        }
-      
-        
-    }
     
-    public void incrementTime(){
-        //logic for clock
-        seconds += 1;
-        if(seconds == 60){
-            minutes++;
-            dig3++;
-            seconds = 0;
-        
-        if(minutes == 60){
-            hour++;
-            dig1++;
-            minutes = 0;
-        }
-        }
-    }
-    
-   
-    //this runs every second in Main()
-    public class T extends TimerTask{
-
-        @Override
-        public void run() {
-            
-  
-            setDigits();
-            setTime();
-            incrementTime();
-          
-            
-        }
-       
-    }
-  
-
-
-     public void setTime(){
-         setDigits();
-         
-         //displays time
-         digit3.setDigit(digit3.getDigit() + dig3);
-         digit1.setDigit(digit1.getDigit() + dig1);
-         digit.setDigit(digit.getDigit() + dig0);
-         digit2.setDigit(digit2.getDigit() + dig2);
-         digit5.setChar(':');
-    }
-
-   
     private void incButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incButtonActionPerformed
-        //Disabled for now
-        /*int currentDigit = digit.getDigit();
-        digit.setDigit((currentDigit + 1) % 10);*/
-         System.out.println(currentTime);
-         setTime();
+        int currentDigit = digit.getDigit();
+        digit.setDigit((currentDigit + 1) % 10);
     }//GEN-LAST:event_incButtonActionPerformed
 
     private void decButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decButtonActionPerformed
@@ -315,10 +202,6 @@ public class TestClockDigit extends javax.swing.JFrame{
         touchReadout.setText("Touched " + evt.getTouched());
     }//GEN-LAST:event_digitTouchReleased
 
-    private void digit4TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit4TouchReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_digit4TouchReleased
-
     /**
      * @param args the command line arguments
      */
@@ -346,13 +229,14 @@ public class TestClockDigit extends javax.swing.JFrame{
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new TestClockDigit().setVisible(true);
-                
             }
         });
     }
@@ -362,11 +246,6 @@ public class TestClockDigit extends javax.swing.JFrame{
     private javax.swing.JPanel controlPanel;
     private javax.swing.JButton decButton;
     private Clock.Digit digit;
-    private Clock.Digit digit1;
-    private Clock.Digit digit2;
-    private Clock.Digit digit3;
-    private Clock.Digit digit4;
-    private Clock.Digit digit5;
     private javax.swing.JPanel digitCell;
     private javax.swing.JButton hideButton;
     private javax.swing.JButton incButton;
