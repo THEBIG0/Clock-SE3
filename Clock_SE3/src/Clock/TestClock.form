@@ -6,7 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -25,7 +25,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="digitCell" min="-2" pref="795" max="-2" attributes="0"/>
+              <Component id="digitCell" min="-2" pref="770" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -34,8 +34,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-              <Component id="digitCell" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="digitCell" min="-2" pref="308" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -57,17 +56,35 @@
         </Property>
       </Properties>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+        <Property name="columns" type="int" value="0"/>
+        <Property name="rows" type="int" value="1"/>
+      </Layout>
       <SubComponents>
         <Component class="Clock.Digit" name="digit0">
+          <Events>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit0TouchReleased"/>
+          </Events>
         </Component>
         <Component class="Clock.Digit" name="digit1">
+          <Events>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit1TouchReleased"/>
+          </Events>
         </Component>
         <Component class="Clock.Digit" name="digSeparator">
+          <Events>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digSeparatorTouchReleased"/>
+          </Events>
         </Component>
         <Component class="Clock.Digit" name="digit2">
+          <Events>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit2TouchReleased"/>
+          </Events>
         </Component>
         <Component class="Clock.Digit" name="digit3">
+          <Events>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit3TouchReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

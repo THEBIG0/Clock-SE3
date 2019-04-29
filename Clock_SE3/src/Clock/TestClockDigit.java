@@ -191,6 +191,7 @@ public class TestClockDigit extends javax.swing.JFrame{
             hideButton.setText("Hide text");
             String[] str = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
             digit.setText(str);
+            digit.setTextAlignment(2);
         }   else {
             digit.setDigit(0);
             digit.clearText();

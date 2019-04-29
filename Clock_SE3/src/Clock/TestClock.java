@@ -8,34 +8,268 @@ import java.time.LocalTime;
 import javax.swing.Timer;
 import java.awt.event.*;
 
+
 /**
  * @author Owen, Sam
  */
 public class TestClock extends javax.swing.JFrame {
-
+    
+    
+    enum clockDisplay {
+        SHOW_TIME,
+        SET_TIME,
+        SET_ALARM,
+        SHOW_HELP,  
+    }
+    clockDisplay page;
+    
+    final String[] days = {
+        "Monday",    "Tuesday", 
+        "Wednesday", "Thursday", 
+        "Friday",    "Saturday", 
+        "Sunday"
+    };
+    int weekDay;
+    
+    Timer timer;
+    int clockSpeed = 1;
+    LocalTime currentTime;
+    boolean twelveHour = true;
+    String meridian = "AM";
+    int hour, minutes, seconds;
+    int d0,d1,d2,d3;
+    Digit[] digits = new Digit[4];
+    
     /**
      * Creates new form TestClock
      */
     public TestClock() {
         initComponents();
         initTime();
+        digits[0] = digit0;
+        digits[1] = digit1;
+        digits[2] = digit2;
+        digits[3] = digit3;
+        to_SHOW_TIME();
     } 
     
     /**
     * All code to be run on timer interval.
     */
     private void runEverySecond(){
-        displayTime();
         incrementTime();
         timer.setDelay(1000/clockSpeed);
+        
+        switch(page) {
+            case SHOW_TIME: displayTime(); break;
+            case SET_TIME: break;
+            case SET_ALARM: break;
+            case SHOW_HELP: break;
+        }  
+    }
+    
+    /*
+     * Methods below handle the transitions between pages
+     * 
+     * to_SHOW_TIME: Clears display and shows the current time
+     * to_SET_TIME: Shows time at call, also displays time change gui
+     * to_SET_ALARM: Not implemented
+     * to_SHOW_HELP: Not implemented
+     */
+    
+    private void to_SHOW_TIME() {
+        // Set page
+        page = clockDisplay.SHOW_TIME;
+        // Configure text alignment
+        digit0.setTextAlignment(1);
+        digit3.setTextAlignment(1);
+        // Clear all text
+        for(Digit d: digits) d.clearText();
+        digSeparator.clearText();
+        // Set text with correct values
+        digit0.setText(10, days[weekDay]);
+        digit3.setText(10, meridian);
+        // Show the time
+        this.displayTime();
+    }
+    
+    private void to_SET_TIME() {
+        page = clockDisplay.SET_TIME;        
+        
+        // Configure all digits with centre aligned arrows.
+        for(Digit d: digits) {
+            d.setTextAlignment(1);
+            d.clearText();
+            d.setText(1, "+");
+            d.setText(9, "-");
+        }
+            
+        // Set display for digSeparator
+        digSeparator.setChar(' ');
+        digSeparator.setTextAlignment(1);
+        digSeparator.clearText();
+        // Show weekdays
+        for(int i = 0; i < days.length; i++) {
+            digSeparator.setText(i+2, days[i]);
+        }
+        // Show clockspeed
+        digSeparator.setText(0, clockSpeed + "X Speed");
+        // Show weekDay cursor
+        digSeparator.setText(weekDay+2, ">"+days[weekDay]+"<");
+        // Show Save button and AM/PM button
+        digit0.setText(10, "Save");
+        digit3.setText(10, meridian);
+      
+    }
+    
+    private void to_SET_ALARM() { 
+        page = clockDisplay.SET_ALARM;
+    }
+    
+    private void to_SHOW_HELP() {
+        page = clockDisplay.SHOW_HELP;
+    }
+    
+     /*
+     * Page event handlers that manage events when the clock is showing different pages
+     * 
+     * SHOW_TIME: Handles touch events when the standard clock is shown
+     * SET_TIME: Handles touch events when the time is being set
+     * SET_ALARM: Not implemented
+     * SHOW_HELP: Not implemented
+     */
+    
+    private void SHOW_TIME_touched(bgi.TouchEvent touch) {
+        if(touch.getSource() == digSeparator) to_SET_TIME();  
+    }
+
+    private void SET_TIME_touched(bgi.TouchEvent touch){
+        int region = touch.getTouched();
+        Digit touched = (Digit)touch.getSource();
+        int current;
+        
+        if(touched == digSeparator) {
+            // If Speed is pressed
+            if (region == 0) {
+                // Toggle 1X/10X Speed
+                if(touched.getText()[0].compareTo("1X Speed") == 0){
+                    clockSpeed = 10;
+                } else {
+                    clockSpeed = 1;
+                }
+                // Set clock speed.
+                touched.setText(0, clockSpeed + "X Speed");
+            }
+            // If weekday is pressed
+            else if (region >= 2 && region < 9) {
+                // clear selector
+                for(int i = 0; i < days.length; i++) {
+                    touched.setText(i+2, days[i]);
+                }
+                // set selector to touched weekDay
+                weekDay = region - 2;
+                touched.setText(region, ">"+days[weekDay]+"<");
+            }
+            return;
+        }
+        
+        if(touched == digit0) {
+            // Get value of current digit
+            current = touched.getDigit();
+            // If up or down is pressed (in this case they are equal)
+            if(region == 1 || region == 9) {
+                // Avoid showing value above 12.
+                if(digit1.getDigit() <= 2) {
+                    touched.setDigit((current + 1) % 2);
+                }
+            }
+            // If "Save" is pressed
+            else if(region == 10) {
+                // Send current digits to time.
+                setTime();
+                // Pass control to SHOW_TIME.
+                to_SHOW_TIME();
+            }
+            return;
+        }
+        
+        if(touched == digit1) {
+            // Get value of current digit
+            current = touched.getDigit();
+            // If up is pressed.
+            if(region == 1) {
+                if(digit0.getDigit() == 0) {
+                    touched.setDigit((current + 1) % 10);
+                } else {
+                    //avoid showing value above 12
+                    touched.setDigit((current + 1) % 3);
+                }
+            // If down is pressed.
+            } else if (region == 9) {
+                if(digit0.getDigit() == 0) {
+                    // Decrements avoiding negative, looping back to 9
+                    touched.setDigit((current + 9) % 10);
+                } else {
+                    // Decrements avoiding negative, looping back to 2
+                    touched.setDigit((current + 2) % 3);
+                }
+            }
+            return;
+        }
+        
+        if(touched == digit2) {
+            // Get value of current digit
+            current = touched.getDigit();
+            // If up is pressed.
+            if(region == 1) {
+                touched.setDigit((current + 1) % 6);
+            // If down is pressed.
+            } else if (region == 9) {
+                touched.setDigit((current + 5) % 6);
+            }
+            return;
+        }
+        
+        if(touched == digit3) {
+            // Get value of current digit
+            current = touched.getDigit();
+            // If up is pressed.
+            if(region == 1) {
+                // Increment if less than 6
+                if(digit2.getDigit() < 6) {
+                    touched.setDigit((current + 1) % 10);
+                }
+            // If down is pressed.
+            } else if (region == 9) {
+                // Decrement if less than 6, avoiding negatives
+                if(digit2.getDigit() < 6) {
+                    touched.setDigit((current + 9) % 10);
+                }
+            // If AM/PM is pressed
+            } else if (region == 10) {
+                // Toggle AM/PM
+                if(touched.getText()[10].compareTo("AM") == 0){
+                    touched.setText(10, "PM");
+                } else {
+                    touched.setText(10, "AM");
+                }  
+            }
+            return;
+        }
+    }
+
+    private void SET_ALARM_touched(bgi.TouchEvent touch){
+    }
+    
+    private void SHOW_HELP_touched(bgi.TouchEvent touch){  
     }
     
         
     /**
-    * Increment seconds and adjust minute/hour for overflow
+    * Increment seconds and adjust minute/hour/day for overflow
     */
     public void incrementTime() {
-        //logic for clock
+        
         seconds++;
         
         if(seconds == 60) {
@@ -45,6 +279,12 @@ public class TestClock extends javax.swing.JFrame {
             if(minutes == 60) {
                 hour++;
                 minutes = 0;
+                meridian = (hour > 11) ? "PM": "AM";
+                
+                if(hour == 24) {
+                    weekDay = (weekDay > 6) ? 0 : weekDay++;
+                    hour = 0;
+                }
             }
         }
     }
@@ -54,11 +294,11 @@ public class TestClock extends javax.swing.JFrame {
     */
     public void displayTime() {
         
-        if(twelveHour) hour %= 12;
+        int hourTemp = (twelveHour) ? hour %= 12 : hour;
         
         // get digits from time
-        d0 = hour > 10 ? hour/10: 0;
-        d1 = hour % 10;
+        d0 = hourTemp > 10 ? hourTemp/10: 0;
+        d1 = hourTemp % 10;
         d2 = minutes > 10 ? minutes/10: 0;
         d3 = minutes % 10;  
         
@@ -67,22 +307,25 @@ public class TestClock extends javax.swing.JFrame {
         
         // shows time on digit display
         digit0.setDigit(d0);
+            digit0.setText(10, days[weekDay]);
         digit1.setDigit(d1);
         digSeparator.setChar(sep);
         digit2.setDigit(d2);
         digit3.setDigit(d3);
+        if(twelveHour) digit3.setText(10, meridian);
     }
     
     /**
      * Updates Time based on digits currently displayed
-     * 
      */
     
     public void setTime() {
-        int setd0 = d0;
-        int setd1 = d1;
-        int setd2 = d2;
-        int setd3 = d3;
+        int setd0 = digit0.getDigit();
+        int setd1 = digit1.getDigit();
+        int setd2 = digit2.getDigit();
+        int setd3 = digit3.getDigit();
+        
+        meridian = digit3.getText()[10];
         
         String concat = Integer.toString(setd0) + Integer.toString(setd1);
         hour = Integer.parseInt(concat);
@@ -96,6 +339,7 @@ public class TestClock extends javax.swing.JFrame {
     */
     private void initTime() {
         currentTime = LocalTime.now();
+        weekDay = 0;
         hour = currentTime.getHour();
         minutes = currentTime.getMinute();
         seconds = currentTime.getSecond(); 
@@ -131,10 +375,61 @@ public class TestClock extends javax.swing.JFrame {
         digitCell.setMaximumSize(new java.awt.Dimension(770, 32767));
         digitCell.setPreferredSize(new java.awt.Dimension(770, 308));
         digitCell.setSize(new java.awt.Dimension(770, 308));
+        digitCell.setLayout(new java.awt.GridLayout(1, 0));
+
+        digit0.addTouchListener(new bgi.TouchListener() {
+            public void touchInitiated(bgi.TouchEvent evt) {
+            }
+            public void touchReleased(bgi.TouchEvent evt) {
+                digit0TouchReleased(evt);
+            }
+            public void touchCancelled(bgi.TouchEvent evt) {
+            }
+        });
         digitCell.add(digit0);
+
+        digit1.addTouchListener(new bgi.TouchListener() {
+            public void touchInitiated(bgi.TouchEvent evt) {
+            }
+            public void touchReleased(bgi.TouchEvent evt) {
+                digit1TouchReleased(evt);
+            }
+            public void touchCancelled(bgi.TouchEvent evt) {
+            }
+        });
         digitCell.add(digit1);
+
+        digSeparator.addTouchListener(new bgi.TouchListener() {
+            public void touchInitiated(bgi.TouchEvent evt) {
+            }
+            public void touchReleased(bgi.TouchEvent evt) {
+                digSeparatorTouchReleased(evt);
+            }
+            public void touchCancelled(bgi.TouchEvent evt) {
+            }
+        });
         digitCell.add(digSeparator);
+
+        digit2.addTouchListener(new bgi.TouchListener() {
+            public void touchInitiated(bgi.TouchEvent evt) {
+            }
+            public void touchReleased(bgi.TouchEvent evt) {
+                digit2TouchReleased(evt);
+            }
+            public void touchCancelled(bgi.TouchEvent evt) {
+            }
+        });
         digitCell.add(digit2);
+
+        digit3.addTouchListener(new bgi.TouchListener() {
+            public void touchInitiated(bgi.TouchEvent evt) {
+            }
+            public void touchReleased(bgi.TouchEvent evt) {
+                digit3TouchReleased(evt);
+            }
+            public void touchCancelled(bgi.TouchEvent evt) {
+            }
+        });
         digitCell.add(digit3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,20 +438,66 @@ public class TestClock extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, 795, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(digitCell, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+// <editor-fold defaultstate="collapsed" desc="Event handlers for each digit. Passes straight to Page event handlers, so folded for readability."> 
+    private void digit1TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit1TouchReleased
+        switch(page) {
+            case SHOW_TIME: SHOW_TIME_touched(evt); break;
+            case SET_TIME: SET_TIME_touched(evt); break;
+            case SET_ALARM: SET_ALARM_touched(evt); break;
+            case SHOW_HELP: SHOW_HELP_touched(evt); break;
+        }
+    }//GEN-LAST:event_digit1TouchReleased
+
+    private void digSeparatorTouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digSeparatorTouchReleased
+        switch(page) {
+            case SHOW_TIME: SHOW_TIME_touched(evt); break;
+            case SET_TIME: SET_TIME_touched(evt); break;
+            case SET_ALARM: SET_ALARM_touched(evt); break;
+            case SHOW_HELP: SHOW_HELP_touched(evt); break;
+        }
+    }//GEN-LAST:event_digSeparatorTouchReleased
+
+    private void digit2TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit2TouchReleased
+        switch(page) {
+            case SHOW_TIME: SHOW_TIME_touched(evt); break;
+            case SET_TIME: SET_TIME_touched(evt); break;
+            case SET_ALARM: SET_ALARM_touched(evt); break;
+            case SHOW_HELP: SHOW_HELP_touched(evt); break;
+        }
+    }//GEN-LAST:event_digit2TouchReleased
+
+    private void digit3TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit3TouchReleased
+        switch(page) {
+            case SHOW_TIME: SHOW_TIME_touched(evt); break;
+            case SET_TIME: SET_TIME_touched(evt); break;
+            case SET_ALARM: SET_ALARM_touched(evt); break;
+            case SHOW_HELP: SHOW_HELP_touched(evt); break;
+        }
+    }//GEN-LAST:event_digit3TouchReleased
+
+    private void digit0TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit0TouchReleased
+         switch(page) {
+            case SHOW_TIME: SHOW_TIME_touched(evt); break;
+            case SET_TIME: SET_TIME_touched(evt); break;
+            case SET_ALARM: SET_ALARM_touched(evt); break;
+            case SHOW_HELP: SHOW_HELP_touched(evt); break;
+         }
+    }//GEN-LAST:event_digit0TouchReleased
+    // </editor-fold> 
        
     /**
      * @param args the command line arguments
@@ -192,8 +533,7 @@ public class TestClock extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new TestClock().setVisible(true);
-                
+                new TestClock().setVisible(true);                
             }
         });
     }
@@ -206,12 +546,5 @@ public class TestClock extends javax.swing.JFrame {
     private Clock.Digit digit3;
     private javax.swing.JPanel digitCell;
     // End of variables declaration//GEN-END:variables
-    
-    Timer timer;
-    int clockSpeed = 1;
-    LocalTime currentTime;
-    boolean twelveHour = true;
-    int hour, minutes, seconds;
-    int d0,d1,d2,d3;
 
 }

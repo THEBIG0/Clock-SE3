@@ -11,7 +11,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Clock.TestClock test = new Clock.TestClock();
-        //Clock.TestClockDigit test = new Clock.TestClockDigit();
+//        Clock.TestClockDigit test = new Clock.TestClockDigit();
         test.setVisible(true);
   
     }

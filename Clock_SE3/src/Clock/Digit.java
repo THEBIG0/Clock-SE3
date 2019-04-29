@@ -10,6 +10,10 @@ import java.util.ArrayList;
 public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
  
 
+    public final int LEFT = 0;
+    public final int CENTRE = 1;
+    public final int RIGHT = 2;
+    
     /**
      * Creates new Digit. Also initializes array of listeners.
      */
@@ -46,14 +50,18 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
      */    
     @Override
     public void setText(String[] text){
-        textSpace.setText(" ");
+        textSpace.setText("");
+        SimpleAttributeSet alignment = new SimpleAttributeSet();
+        StyleConstants.setAlignment(alignment, textAlignment);
+        String arr = textSpace.getText();
         for(int i = text.length-1; i >= 0; i--) {
             // the Document.insertString method requires exception handling.
             try {
                 if(i != text.length-1) {     // no newLine at end
-                    textSpace.getDocument().insertString(0,  "\n", null);
+                    textSpace.getDocument().insertString(0,  "\n", alignment);
                 }
-                textSpace.getDocument().insertString(0, text[i], null);
+                textSpace.getDocument().insertString(0, text[i], alignment);
+                arr = textSpace.getText();
             } catch(BadLocationException e){
                 System.out.println("Invalid index for insertString()");
             }
@@ -65,20 +73,25 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
      */
     @Override
     public String[] getText(){
-        String lines[] = textSpace.getText().split("\n");
+        String[] lines = new String[rows];
+        String[] currentText = textSpace.getText().split("\n");
+        for(int i = 0; i < currentText.length; i++){
+            lines[i] = currentText[i];
+        }
         return lines;
     }
     
      /**
      * Set the horizontal text alignment of textSpace.
-     * @param i - defined Integers 1: LEFT, 2: CENTRE, 3: RIGHT
+     * @param i - defined Integers 0: LEFT, 1: CENTRE, 2: RIGHT
      */
     @Override
     public void setTextAlignment(int i){
         textAlignment = i;
+        StyledDocument doc = textSpace.getStyledDocument();
         SimpleAttributeSet alignment = new SimpleAttributeSet();
-        StyleConstants.setAlignment(alignment, i-1);
-        textSpace.setParagraphAttributes(alignment, false);
+        StyleConstants.setAlignment(alignment, i);
+        doc.setParagraphAttributes(0, doc.getLength(), alignment, false);
     }
 
      /**
@@ -111,9 +124,9 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     /**
      * Sets the text of textSpace corresponding to the index.
      * @param text - String to replace textSpace row with
-     * @param index - integer row of textSpace to change
+     * @param index - integer row of textSpace to change (0-10)
      */
-    public void setText(String text, int index){
+    public void setText(int index, String text){
         String[] lines = this.getText();
         lines[index] = text;
         this.setText(lines);
@@ -125,7 +138,7 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     public void clearText() {
         String[] empty = new String[rows];
         for(String line: empty){
-            line = " ";
+            line = "";
         }
         this.setText(empty);
     }
@@ -161,12 +174,11 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
 
         setMaximumSize(new java.awt.Dimension(1000, 1000));
         setPreferredSize(new java.awt.Dimension(154, 308));
-        setSize(new java.awt.Dimension(154, 308));
 
         textSpace.setEditable(false);
         textSpace.setBorder(null);
 
-        textSpace.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 23)); // NOI18N
+        textSpace.setFont(new java.awt.Font("Courier New", 0, 23)); // NOI18N
         textSpace.setForeground(new java.awt.Color(51, 255, 0));
         textSpace.setAutoscrolls(false);
         textSpace.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -175,7 +187,6 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         textSpace.setOpaque(false);
         textSpace.setPreferredSize(new java.awt.Dimension(154, 308));
         textSpace.setRequestFocusEnabled(false);
-        textSpace.setSize(new java.awt.Dimension(154, 308));
         textSpace.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 textSpaceMousePressed(evt);
@@ -187,10 +198,10 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         add(textSpace);
         textSpace.setBounds(0, 0, 154, 308);
         SimpleAttributeSet lineSpacing = new SimpleAttributeSet();
-        StyleConstants.setLineSpacing(lineSpacing, (float) 0.05);
+        StyleConstants.setLineSpacing(lineSpacing, (float) 0.04);
         textSpace.setParagraphAttributes(lineSpacing, false);
 
-        digitLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 240)); // NOI18N
+        digitLabel.setFont(new java.awt.Font("Courier New", 0, 240)); // NOI18N
         digitLabel.setForeground(new java.awt.Color(51, 255, 0));
         digitLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         digitLabel.setText("0");
@@ -200,7 +211,6 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         digitLabel.setMaximumSize(new java.awt.Dimension(1000, 1000));
         digitLabel.setMinimumSize(new java.awt.Dimension(0, 0));
         digitLabel.setPreferredSize(new java.awt.Dimension(154, 308));
-        digitLabel.setSize(new java.awt.Dimension(154, 308));
         add(digitLabel);
         digitLabel.setBounds(0, 0, 154, 308);
     }// </editor-fold>//GEN-END:initComponents
