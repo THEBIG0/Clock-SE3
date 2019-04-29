@@ -57,10 +57,10 @@ public class TestClock extends javax.swing.JFrame {
         if(twelveHour) hour %= 12;
         
         // get digits from time
-        int d0 = hour > 10 ? hour/10: 0;
-        int d1 = hour % 10;
-        int d2 = minutes > 10 ? minutes/10: 0;
-        int d3 = minutes % 10;  
+        d0 = hour > 10 ? hour/10: 0;
+        d1 = hour % 10;
+        d2 = minutes > 10 ? minutes/10: 0;
+        d3 = minutes % 10;  
         
         // flash separator
         char sep = (seconds%2 ==0) ? ':' : ' ';
@@ -71,6 +71,24 @@ public class TestClock extends javax.swing.JFrame {
         digSeparator.setChar(sep);
         digit2.setDigit(d2);
         digit3.setDigit(d3);
+    }
+    
+    /**
+     * Updates Time based on digits currently displayed
+     * 
+     */
+    
+    public void setTime() {
+        int setd0 = d0;
+        int setd1 = d1;
+        int setd2 = d2;
+        int setd3 = d3;
+        
+        String concat = Integer.toString(setd0) + Integer.toString(setd1);
+        hour = Integer.parseInt(concat);
+        
+        String concat2 = Integer.toString(setd2) + Integer.toString(setd3);
+        minutes = Integer.parseInt(concat2);
     }
     
     /**
@@ -194,5 +212,6 @@ public class TestClock extends javax.swing.JFrame {
     LocalTime currentTime;
     boolean twelveHour = true;
     int hour, minutes, seconds;
+    int d0,d1,d2,d3;
 
 }
