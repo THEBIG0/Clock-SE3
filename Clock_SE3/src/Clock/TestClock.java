@@ -20,8 +20,19 @@ public class TestClock extends javax.swing.JFrame {
         SET_TIME,
         SET_ALARM,
         SHOW_HELP,  
+        SHOW_SETTINGS,
     }
     clockDisplay page;
+    
+    /*
+     * I hate colour without a u but Java uses the inferior 
+     * American spelling so probably should stick to that
+     */
+    enum colorScheme{
+        BLACKGREEN,
+        WHITEBLACK,
+    }
+    colorScheme colors;
     
     final String[] days = {
         "Monday",    "Tuesday", 
@@ -65,6 +76,7 @@ public class TestClock extends javax.swing.JFrame {
             case SET_TIME: break;
             case SET_ALARM: break;
             case SHOW_HELP: break;
+            case SHOW_SETTINGS: break;
         }  
     }
     
@@ -89,8 +101,35 @@ public class TestClock extends javax.swing.JFrame {
         // Set text with correct values
         digit0.setText(10, days[weekDay]);
         digit3.setText(10, meridian);
+        // Add Settings button
+        digit0.setText(0, "Settings" );
         // Show the time
         this.displayTime();
+    }
+    
+    private void to_SHOW_SETTINGS(){
+        page = clockDisplay.SHOW_SETTINGS;
+        // Clear all digits
+
+        for(Digit d: digits) {
+            d.clearText();
+            d.setChar(' ');
+        }
+        digSeparator.clearText();
+        digSeparator.setChar(' ');
+        
+        // Add title text
+        digSeparator.setText(0, "Settings");
+        digit1.setText(2, "Colours:"); // Auto wraps to new line
+        
+        // Exit button
+        digit0.setText(0,"Exit");
+        
+        // Color Scheme 1 Button
+        digit1.setText(3, "  Hacker");
+        // Color Scheme 2 Button
+        digit1.setText(4, "  Slate");
+        
     }
     
     private void to_SET_TIME() {
@@ -137,12 +176,16 @@ public class TestClock extends javax.swing.JFrame {
      * SET_TIME: Handles touch events when the time is being set
      * SET_ALARM: Not implemented
      * SHOW_HELP: Not implemented
+     * SHOW_SETTINGS: Handles touch inputs when settings page is open
      */
     
     private void SHOW_TIME_touched(bgi.TouchEvent touch) {
-        if(touch.getSource() == digSeparator) to_SET_TIME();  
+        if(touch.getSource() == digSeparator) to_SET_TIME(); 
+        
+        if((touch.getSource() == digit0) && touch.getTouched() == 0) to_SHOW_SETTINGS();
     }
 
+    
     private void SET_TIME_touched(bgi.TouchEvent touch){
         int region = touch.getTouched();
         Digit touched = (Digit)touch.getSource();
@@ -264,7 +307,42 @@ public class TestClock extends javax.swing.JFrame {
     private void SHOW_HELP_touched(bgi.TouchEvent touch){  
     }
     
+    private void SETTINGS_touched(bgi.TouchEvent touch){
+        int region = touch.getTouched();
+        Digit touched = (Digit)touch.getSource();
         
+        /**
+         * TODO: Add exit button, Add settings toggle thing
+         */
+        
+        if(touched == digit0){
+            //Exit button
+            if(region == 0){
+                to_SHOW_TIME();
+            }
+        }
+        
+        if(touched == digit1){
+            switch(region){
+                case 3: setColorScheme(colors.BLACKGREEN); break;
+                case 4: setColorScheme(colors.WHITEBLACK); break;
+            }   
+        }
+    }
+
+    /**
+     * Adjust the color scheme for all the digits
+     */
+    private void setColorScheme(colorScheme color){
+        for(Digit d: digits) {
+            d.setColor(color.ordinal());
+        }
+        digSeparator.setColor(color.ordinal());
+        
+        
+    }
+    
+    
     /**
     * Increment seconds and adjust minute/hour/day for overflow
     */
@@ -459,7 +537,8 @@ public class TestClock extends javax.swing.JFrame {
             case SET_TIME: SET_TIME_touched(evt); break;
             case SET_ALARM: SET_ALARM_touched(evt); break;
             case SHOW_HELP: SHOW_HELP_touched(evt); break;
-        }
+            case SHOW_SETTINGS: SETTINGS_touched(evt); break;
+        } 
     }//GEN-LAST:event_digit1TouchReleased
 
     private void digSeparatorTouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digSeparatorTouchReleased
@@ -468,6 +547,7 @@ public class TestClock extends javax.swing.JFrame {
             case SET_TIME: SET_TIME_touched(evt); break;
             case SET_ALARM: SET_ALARM_touched(evt); break;
             case SHOW_HELP: SHOW_HELP_touched(evt); break;
+            case SHOW_SETTINGS: SETTINGS_touched(evt); break;
         }
     }//GEN-LAST:event_digSeparatorTouchReleased
 
@@ -477,6 +557,7 @@ public class TestClock extends javax.swing.JFrame {
             case SET_TIME: SET_TIME_touched(evt); break;
             case SET_ALARM: SET_ALARM_touched(evt); break;
             case SHOW_HELP: SHOW_HELP_touched(evt); break;
+            case SHOW_SETTINGS: SETTINGS_touched(evt); break;
         }
     }//GEN-LAST:event_digit2TouchReleased
 
@@ -486,6 +567,7 @@ public class TestClock extends javax.swing.JFrame {
             case SET_TIME: SET_TIME_touched(evt); break;
             case SET_ALARM: SET_ALARM_touched(evt); break;
             case SHOW_HELP: SHOW_HELP_touched(evt); break;
+            case SHOW_SETTINGS: SETTINGS_touched(evt); break;
         }
     }//GEN-LAST:event_digit3TouchReleased
 
@@ -495,6 +577,7 @@ public class TestClock extends javax.swing.JFrame {
             case SET_TIME: SET_TIME_touched(evt); break;
             case SET_ALARM: SET_ALARM_touched(evt); break;
             case SHOW_HELP: SHOW_HELP_touched(evt); break;
+            case SHOW_SETTINGS: SETTINGS_touched(evt); break;
          }
     }//GEN-LAST:event_digit0TouchReleased
     // </editor-fold> 
