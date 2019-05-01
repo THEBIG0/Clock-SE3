@@ -91,7 +91,7 @@ public class TestClock extends javax.swing.JFrame {
                 minutes = 0;
                 
                 if(hour > 12) {
-                    hour = 0;
+                    hour = 1;
                 }
                 
                 if(hour == 12) {
