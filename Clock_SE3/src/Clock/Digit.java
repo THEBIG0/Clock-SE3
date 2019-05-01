@@ -162,27 +162,27 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     
         /**
      * Set the color of the digit
-     * @param i
+     * @param color
      */
-    public void setColor(int i){ // TODO: Support enum
+    public void setColor(TestClock.colorScheme color){ // TODO: Support enum
         Color colorBG;  // Background Color
         Color colorDig; // Digit Color
         Color colorText;// Text Color
         
-        switch (i) {
-            case 1: // Grey:
+        switch (color) {
+            case SLATE: // Slate:
                 colorBG = new java.awt.Color(82, 82, 82);       // Dark Grey
                 colorDig = new java.awt.Color(229, 236, 233);   // Off-white
                 colorText = new java.awt.Color(194, 193, 165);  // Light grey
                 break;
                 
-            case 2: // For Alarm Clock Flash
+            case WHITEBLACK: // For Alarm Clock Flash
                 colorBG = new java.awt.Color(255, 255, 255);    // White
                 colorDig = new java.awt.Color(0, 0, 0);         // Black
                 colorText = colorBG;
                 break;
                 
-            case 3: // Inverted Alarm Clock Flash
+            case BLACKWHITE: // Inverted Alarm Clock Flash
                 colorBG = new java.awt.Color(0, 0, 0);          // White
                 colorDig = new java.awt.Color(255, 255, 255);   // Black
                 colorText = colorBG;

@@ -24,8 +24,10 @@ public class TestClock extends javax.swing.JFrame {
     SettingsView settingsView;
     
     public enum colorScheme{
-        BLACKGREEN,
+        HACKER,
+        SLATE,
         WHITEBLACK,
+        BLACKWHITE,
     }
     public colorScheme colors;
     
@@ -108,11 +110,11 @@ public class TestClock extends javax.swing.JFrame {
     
      /**
      * Adjust the color scheme for all the digits.
-     * @param color the colorscheme to set all digits to
+     * @param color the color scheme to set all digits to
      */
     public void setColorScheme(colorScheme color){
         for(Digit d: getDigits()) {
-            d.setColor(color.ordinal());
+            d.setColor(color);
         }
     }
     

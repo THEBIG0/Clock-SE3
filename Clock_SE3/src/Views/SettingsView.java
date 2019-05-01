@@ -12,7 +12,7 @@ import Clock.*;
  */
 
 public class SettingsView extends PageView {
-    
+        TestClock.colorScheme colors;    
     private TestClock clock;
     
     /**
@@ -32,9 +32,7 @@ public class SettingsView extends PageView {
         int region = touch.getTouched();
         Digit touched = (Digit) touch.getSource();
         
-        /**
-         * TODO: Add exit button, Add settings toggle thing
-         */
+
     // Check Digit 0
         if(touched == clock.getDigits()[0]){
             
@@ -50,11 +48,11 @@ public class SettingsView extends PageView {
             switch(region){
                 // Hacker pressed
                 case 3:
-                    clock.setColorScheme(clock.colors.BLACKGREEN);
+                    clock.setColorScheme(colors.BLACKWHITE);
                     break;
                 // Slate pressed
                 case 4: 
-                    clock.setColorScheme(clock.colors.WHITEBLACK);
+                    clock.setColorScheme(colors.SLATE);
                     break;
             }   
         }
