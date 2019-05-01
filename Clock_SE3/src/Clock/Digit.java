@@ -1,5 +1,6 @@
 package Clock;
 import bgi.*;
+import java.awt.Color;
 import javax.swing.text.*;
 import java.util.ArrayList;
 
@@ -119,7 +120,7 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         listeners.remove(touchListener);
     }
 
-    /// End of methods required by TouchListener interface
+    /// End of methods required by TouchDigit interface
     
     /**
      * Sets the text of textSpace corresponding to the index.
@@ -157,6 +158,49 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
      */
     public int getRows(){
         return rows;
+    }
+    
+    /**
+     * Set the color of the digit
+     * @param i
+     */
+    public void setColor(int i){ // TODO: Support enum
+        Color colorBG;  // Background Color
+        Color colorDig; // Digit Color
+        Color colorText;// Text Color
+        
+        switch (i) {
+            case 1: // Grey:
+                colorBG = new java.awt.Color(82, 82, 82);
+                colorDig = new java.awt.Color(229, 236, 233);
+                colorText = new java.awt.Color(194, 193, 165);
+                break;
+                
+            case 2: // For Alarm Clock Flash
+                colorBG = new java.awt.Color(255, 255, 255);    // White
+                colorDig = new java.awt.Color(0, 0, 0);         // Black
+                colorText = colorBG;
+                break;
+                
+            case 3: // Inverted Alarm Clock Flash
+                colorBG = new java.awt.Color(0, 0, 0);          // Black
+                colorDig = new java.awt.Color(255, 255, 255);   // White
+                colorText = colorBG;
+                break;
+                
+            default: // Green/Black
+                colorBG = new java.awt.Color(0, 0, 0);          // Green
+                colorDig = new java.awt.Color(51, 255, 0);      // Black
+                colorText = colorDig;
+                break;
+        }
+        
+        // Set Text and Digit colors
+        textSpace.setForeground(colorText);
+        digitLabel.setForeground(colorDig);
+        // Set JLayeredPane background
+        setBackground(colorBG);
+
     }
     
     
