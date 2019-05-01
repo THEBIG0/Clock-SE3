@@ -14,7 +14,6 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
     public final int LEFT = 0;
     public final int CENTRE = 1;
     public final int RIGHT = 2;
-
     
     /**
      * Creates new Digit. Also initializes array of listeners.
@@ -121,7 +120,7 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         listeners.remove(touchListener);
     }
 
-    /// End of methods required by TouchListener interface
+    /// End of methods required by TouchDigit interface
     
     /**
      * Sets the text of textSpace corresponding to the index.
@@ -161,7 +160,7 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         return rows;
     }
     
-    /**
+        /**
      * Set the color of the digit
      * @param i
      */
@@ -175,13 +174,14 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
                 colorBG = new java.awt.Color(82, 82, 82);
                 colorDig = new java.awt.Color(229, 236, 233);
                 colorText = new java.awt.Color(194, 193, 165);
-                    break;
+                break;
                 
             case 2: // For Alarm Clock Flash
                 colorBG = new java.awt.Color(255, 255, 255);    // White
                 colorDig = new java.awt.Color(0, 0, 0);         // Black
                 colorText = colorBG;
                 break;
+                
             case 3: // Inverted Alarm Clock Flash
                 colorBG = new java.awt.Color(0, 0, 0);          // Black
                 colorDig = new java.awt.Color(255, 255, 255);   // White
@@ -192,18 +192,15 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
                 colorBG = new java.awt.Color(0, 0, 0);          // Green
                 colorDig = new java.awt.Color(51, 255, 0);      // Black
                 colorText = colorDig;
-                    break;
+                break;
         }
-        
-        
         
         // Set Text and Digit colors
         textSpace.setForeground(colorText);
         digitLabel.setForeground(colorDig);
         // Set JLayeredPane background
         setBackground(colorBG);
-        
-        
+
     }
     
     
@@ -219,9 +216,7 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         textSpace = new javax.swing.JTextPane();
         digitLabel = new javax.swing.JLabel();
 
-        setBackground(java.awt.Color.black);
         setMaximumSize(new java.awt.Dimension(1000, 1000));
-        setOpaque(true);
         setPreferredSize(new java.awt.Dimension(154, 308));
 
         textSpace.setEditable(false);
@@ -261,20 +256,20 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         digitLabel.setMinimumSize(new java.awt.Dimension(0, 0));
         digitLabel.setPreferredSize(new java.awt.Dimension(154, 308));
         add(digitLabel);
-        digitLabel.setBounds(0, 0, 154, 310);
+        digitLabel.setBounds(0, 0, 154, 308);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void textSpaceMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSpaceMouseReleased
-        int touchedRegion = evt.getY()/(Y/rows);
-        notifyListeners(touchedRegion, touched);
-        touched = -1;
-    }//GEN-LAST:event_textSpaceMouseReleased
 
     private void textSpaceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSpaceMousePressed
         int touchedRegion = evt.getY()/(Y/rows);
         notifyListeners(touchedRegion, -1);
         touched = touchedRegion;
     }//GEN-LAST:event_textSpaceMousePressed
+
+    private void textSpaceMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSpaceMouseReleased
+        int touchedRegion = evt.getY()/(Y/rows);
+        notifyListeners(touchedRegion, touched);
+        touched = -1;
+    }//GEN-LAST:event_textSpaceMouseReleased
     
 
     /**

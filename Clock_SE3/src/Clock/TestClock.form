@@ -63,27 +63,32 @@
       <SubComponents>
         <Component class="Clock.Digit" name="digit0">
           <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit0TouchInitiated"/>
             <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit0TouchReleased"/>
           </Events>
         </Component>
         <Component class="Clock.Digit" name="digit1">
           <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit1TouchInitiated"/>
             <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit1TouchReleased"/>
-          </Events>
-        </Component>
-        <Component class="Clock.Digit" name="digSeparator">
-          <Events>
-            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digSeparatorTouchReleased"/>
           </Events>
         </Component>
         <Component class="Clock.Digit" name="digit2">
           <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit2TouchInitiated"/>
             <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit2TouchReleased"/>
           </Events>
         </Component>
         <Component class="Clock.Digit" name="digit3">
           <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit3TouchInitiated"/>
             <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit3TouchReleased"/>
+          </Events>
+        </Component>
+        <Component class="Clock.Digit" name="digit4">
+          <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit4TouchInitiated"/>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit4TouchReleased"/>
           </Events>
         </Component>
       </SubComponents>
