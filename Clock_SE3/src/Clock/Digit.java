@@ -185,12 +185,12 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
             case BLACKWHITE: // Inverted Alarm Clock Flash
                 colorBG = new java.awt.Color(0, 0, 0);          // White
                 colorDig = new java.awt.Color(255, 255, 255);   // Black
-                colorText = colorBG;
+                colorText = colorDig;
                 break;
                 
             default: // Green/Black
-                colorBG = new java.awt.Color(0, 0, 0);          // Green
-                colorDig = new java.awt.Color(51, 255, 0);      // Black
+                colorBG = new java.awt.Color(0, 0, 0);          // Black
+                colorDig = new java.awt.Color(51, 255, 0);      // Green
                 colorText = colorDig;
                 break;
         }

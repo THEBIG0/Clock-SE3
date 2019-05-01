@@ -48,7 +48,7 @@ public class SettingsView extends PageView {
             switch(region){
                 // Hacker pressed
                 case 3:
-                    clock.setColorScheme(colors.BLACKWHITE);
+                    clock.setColorScheme(colors.HACKER);
                     break;
                 // Slate pressed
                 case 4: 
@@ -79,6 +79,7 @@ public class SettingsView extends PageView {
         clock.getDigits()[0].setText(0,"Exit");
         
         // Color Scheme 1 Button
+        clock.getDigits()[1].setTextAlignment(0);
         clock.getDigits()[1].setText(3, "  Hacker");
         // Color Scheme 2 Button
         clock.getDigits()[1].setText(4, "  Slate");
