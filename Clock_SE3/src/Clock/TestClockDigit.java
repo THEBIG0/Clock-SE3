@@ -9,12 +9,18 @@ import bgi.TouchEvent;
  * @author sbrown
  */
 public class TestClockDigit extends javax.swing.JFrame{
+    
+    boolean digitShown = true;
+    String[] regionText = 
+    {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+
 
     /**
      * Creates new form DigitTestBed
      */
     public TestClockDigit() {
         initComponents();
+        digit.setTextAlignment(1);
     }
 
     /*
@@ -162,14 +168,18 @@ public class TestClockDigit extends javax.swing.JFrame{
     
     
     private void incButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incButtonActionPerformed
-        int currentDigit = digit.getDigit();
-        digit.setDigit((currentDigit + 1) % 10);
+        if(digitShown) {
+            int currentDigit = digit.getDigit();
+            digit.setDigit((currentDigit + 1) % 10);
+        }
     }//GEN-LAST:event_incButtonActionPerformed
 
     private void decButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decButtonActionPerformed
-        int currentDigit = digit.getDigit();
-        if (currentDigit == -1) currentDigit++;
-        digit.setDigit((currentDigit + 9) % 10);
+        if(digitShown) {
+            int currentDigit = digit.getDigit();
+            if (currentDigit == -1) currentDigit++;
+            digit.setDigit((currentDigit + 9) % 10);
+        }
     }//GEN-LAST:event_decButtonActionPerformed
     
     /**
@@ -177,22 +187,24 @@ public class TestClockDigit extends javax.swing.JFrame{
      * Also removes extra characters from field
      */
     private void manualSetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manualSetButtonActionPerformed
-        char parsedChar = this.charField.getText().charAt(0);
-        this.charField.setText(String.valueOf(parsedChar));
-        digit.setChar(parsedChar);
+        if(digitShown) {
+            char parsedChar = this.charField.getText().charAt(0);
+            this.charField.setText(String.valueOf(parsedChar));
+            digit.setChar(parsedChar);
+        }
     }//GEN-LAST:event_manualSetButtonActionPerformed
 
     /**
      * toggle button to hide/show digit
      */
     private void hideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideButtonActionPerformed
-        if (hideButton.getText().equals("Hide digit")){
+        if(digitShown) {
+            digitShown = false;
             digit.setChar(' ');
             hideButton.setText("Hide text");
-            String[] str = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-            digit.setText(str);
-            digit.setTextAlignment(2);
-        }   else {
+            digit.setText(regionText);
+        } else {
+            digitShown = true;
             digit.setDigit(0);
             digit.clearText();
             hideButton.setText("Hide digit");
