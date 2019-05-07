@@ -3,26 +3,11 @@ package Views;
 import Clock.Digit;
 import Clock.TestClock;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * @author Sam
  */
 public class ClockView extends PageView {
-    private TestClock clock;
-    private int d0,d1,d2,d3;
-    private char sep;
-    
-    private final String[] days = {
-        "Monday",    "Tuesday", 
-        "Wednesday", "Thursday", 
-        "Friday",    "Saturday", 
-        "Sunday"
-    };
+    TestClock clock;
     
     /**
      * Creates new View
@@ -89,17 +74,26 @@ public class ClockView extends PageView {
         if (hour > 12) hour -= 12;
         
         // get digits from time
-        d0 = hour >= 10 ? hour/10: 0;
-        d1 = hour % 10;
-        d2 = minute > 10 ? minute/10: 0;
-        d3 = minute % 10;
-        sep = (clock.getSeconds()%2==0) ? ':' : ' ';
+        int d0 = hour >= 10 ? hour/10: 0;
+        int d1 = hour % 10;
+        int d2 = minute > 10 ? minute/10: 0;
+        int d3 = minute % 10;
+        char sep = (clock.getSeconds()%2==0) ? ':' : ' ';
 
-        // shows time on digit display
+        // show time on digit display
         clock.showDigits(d0, d1, sep, d2, d3);
+        
+        // show weekday and meridian on correct digit
         clock.getDigits()[0].setText(10, days[clock.weekDay]);
         clock.getDigits()[4].setText(10, clock.meridian);
         
     }
+    
+    final String[] days = {
+    "Monday",    "Tuesday", 
+    "Wednesday", "Thursday", 
+    "Friday",    "Saturday", 
+    "Sunday"
+    };
 }
 
