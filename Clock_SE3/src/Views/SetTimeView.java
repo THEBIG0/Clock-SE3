@@ -23,10 +23,11 @@ public class SetTimeView extends PageView {
     int clockSpeed;
     
     final String[] days = {
+        "Sunday",
         "Monday",    "Tuesday", 
         "Wednesday", "Thursday", 
         "Friday",    "Saturday", 
-        "Sunday"
+        
     };
     
     
@@ -59,7 +60,10 @@ public class SetTimeView extends PageView {
                     
                 // If down is pressed.
                 case 9:
-                    if(hour >= 10){
+                    if(hour == 10){
+                        hour = 9;
+                    }
+                    if(hour > 10){
                         hour -= 10;
                     }
                     break;
@@ -217,7 +221,7 @@ public class SetTimeView extends PageView {
         // Get digits from time
         int d0 = hour >= 10 ? hour/10: 0;
         int d1 = hour % 10;
-        int d2 = minutes > 10 ? minutes/10: 0;
+        int d2 = minutes > 10 ? minutes/10 : (minutes == 10) ? 1 : 0;
         int d3 = minutes % 10;
         
         // Update digits

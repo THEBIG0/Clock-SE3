@@ -76,7 +76,7 @@ public class ClockView extends PageView {
         // get digits from time
         int d0 = hour >= 10 ? hour/10: 0;
         int d1 = hour % 10;
-        int d2 = minute > 10 ? minute/10: 0;
+        int d2 = minute > 10 ? minute/10 : (minute == 10) ? 1 : 0;
         int d3 = minute % 10;
         char sep = (clock.getSeconds()%2==0) ? ':' : ' ';
 
@@ -90,10 +90,10 @@ public class ClockView extends PageView {
     }
     
     final String[] days = {
+    "Sunday",
     "Monday",    "Tuesday", 
     "Wednesday", "Thursday", 
-    "Friday",    "Saturday", 
-    "Sunday"
+    "Friday",    "Saturday",
     };
 }
 

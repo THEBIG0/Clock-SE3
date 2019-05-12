@@ -4,6 +4,7 @@ import Views.*;
 import java.time.LocalTime;
 import javax.swing.Timer;
 import java.awt.event.*;
+import java.util.Calendar;
 
 
 /**
@@ -197,9 +198,16 @@ public class TestClock extends javax.swing.JFrame {
         weekDay = 0;
         currentTime = LocalTime.now();
         
+        // Not the pretiest thing but it'll do
+        Calendar cal = Calendar.getInstance();
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        weekDay = day;
+        weekDay--; // Day is 1 indexed, we use 0 indexed so decrement one.
+        
         hour = (currentTime.getHour()%12 == 0) ? 12 : currentTime.getHour() % 12;
         minutes = currentTime.getMinute();
         seconds = currentTime.getSecond(); 
+        
         
         timer = new Timer(1000/clockSpeed, new ActionListener(){
             //this code will run every second, sped up by a factor of clockSpeed
