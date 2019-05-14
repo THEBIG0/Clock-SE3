@@ -42,7 +42,7 @@ public class ClockView extends PageView {
             }
         }
     // Check Digit 2 (Separator)
-        else if(touched == clock.getDigits()[2]) {
+        else if(heldTime > 2 && touched == clock.getDigits()[2]) {
             clock.toSetTime();
             return;
         }
