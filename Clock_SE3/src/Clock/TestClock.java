@@ -198,6 +198,8 @@ public class TestClock extends javax.swing.JFrame {
         weekDay = 0;
         currentTime = LocalTime.now();
         
+        
+        
         // Not the pretiest thing but it'll do
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_WEEK);
@@ -205,6 +207,12 @@ public class TestClock extends javax.swing.JFrame {
         weekDay--; // Day is 1 indexed, we use 0 indexed so decrement one.
         
         hour = (currentTime.getHour()%12 == 0) ? 12 : currentTime.getHour() % 12;
+        if(currentTime.getHour() >= 12){
+            meridian = "PM";
+        }else{
+            meridian = "AM";
+        }
+        
         minutes = currentTime.getMinute();
         seconds = currentTime.getSecond(); 
         
