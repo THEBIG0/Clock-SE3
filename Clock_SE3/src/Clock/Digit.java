@@ -160,6 +160,30 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         return rows;
     }
     
+    public void setColorSpecific(int start, int end){
+        String text = "";
+        text += "<html><span style=\"color:red\"> TEST TEXT </span>";      
+        
+        textSpace.setText("");
+        SimpleAttributeSet alignment = new SimpleAttributeSet();
+        StyleConstants.setAlignment(alignment, textAlignment);
+        String arr = textSpace.getText();
+        for(int i = text.length()-1; i >= 0; i--) {
+            // the Document.insertString method requires exception handling.
+            try {
+                if(i != text.length()-1) {     // no newLine at end
+                    textSpace.getDocument().insertString(0,  "\n", alignment);
+                }
+                textSpace.getDocument().insertString(0, text[i], alignment);
+                arr = textSpace.getText();
+            } catch(BadLocationException e){
+                System.out.println("Invalid index for insertString()");
+            }
+        }
+        
+    }
+    
+    
         /**
      * Set the color of the digit
      * @param color

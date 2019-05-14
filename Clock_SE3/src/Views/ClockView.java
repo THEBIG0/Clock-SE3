@@ -46,6 +46,11 @@ public class ClockView extends PageView {
             clock.toSetTime();
             return;
         }
+        
+        else if(touched == clock.getDigits()[4]){
+            clock.toHelpView();
+            return;
+        }
     }
     
     /**
@@ -64,6 +69,9 @@ public class ClockView extends PageView {
         // Show buttons
         clock.getDigits()[0].setText(0, "Settings" );
 
+        // Show help button
+        clock.getDigits()[4].setText(0, "?");
+        
         // Update the time and day
         update();
     }
