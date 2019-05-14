@@ -182,7 +182,6 @@ public class SetTimeView extends PageView {
     @Override
     public void show() {   
         
-        this.clock = clock;
         this.hour = (clock.getHours() == 0) ? 12 : clock.getHours();
         this.minutes = clock.getMinutes();
         this.meridian = clock.meridian;
@@ -199,6 +198,7 @@ public class SetTimeView extends PageView {
         
         // Clear arrows on separator
         clock.getDigits()[2].clearText();
+        clock.getDigits()[2].setChar(' ');
 
         // Show weekdays
         for(int i = 0; i < days.length; i++) {
@@ -221,7 +221,7 @@ public class SetTimeView extends PageView {
         // Get digits from time
         int d0 = hour >= 10 ? hour/10: 0;
         int d1 = hour % 10;
-        int d2 = minutes > 10 ? minutes/10 : (minutes == 10) ? 1 : 0;
+        int d2 = minutes >= 10 ? minutes/10 : 0;
         int d3 = minutes % 10;
         
         // Update digits

@@ -200,7 +200,6 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         digitLabel.setForeground(colorDig);
         // Set JLayeredPane background
         setBackground(colorBG);
-        setOpaque(true);
 
     }
     
@@ -217,7 +216,9 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         textSpace = new javax.swing.JTextPane();
         digitLabel = new javax.swing.JLabel();
 
+        setBackground(java.awt.Color.black);
         setMaximumSize(new java.awt.Dimension(1000, 1000));
+        setOpaque(true);
         setPreferredSize(new java.awt.Dimension(154, 308));
 
         textSpace.setEditable(false);

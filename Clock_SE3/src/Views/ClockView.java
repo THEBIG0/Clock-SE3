@@ -2,12 +2,15 @@ package Views;
 
 import Clock.Digit;
 import Clock.TestClock;
+import bgi.*;
 
 /**
  * @author Sam
  */
 public class ClockView extends PageView {
     TestClock clock;
+    Digit touched;
+    double heldTime = -1;
     
     /**
      * Creates new View
@@ -22,9 +25,13 @@ public class ClockView extends PageView {
      * @param touch the touch event to parse.
      */
     @Override
-    public void touched(bgi.TouchEvent touch) {
-        Digit touched = (Digit) touch.getSource();
+    public void touched(TouchEvent touch) {
+        touched = (Digit) touch.getSource();
         int region = touch.getTouched();
+        if(region == -1) {
+            heldTime++;
+            return;
+        }
         
     // Check Digit 0
         if(touched == clock.getDigits()[0]) {
@@ -61,12 +68,22 @@ public class ClockView extends PageView {
         update();
     }
 
-    
     /**
-     * Makes minimal necesary changes, does not redisplay entire View
+     * Makes minimal neccessary changes, does not redisplay entire View.
+     * Generally set to run every second.
      */
     @Override()
     public void update() {
+        
+        // increment heldtime if started
+        if(heldTime > -1) heldTime++;
+        
+        // if held for longer than 2 seconds, emulate touch 
+        if(heldTime > 2) {
+            touched(new TouchEvent(0, 0, touched));
+            heldTime = -1;
+            return;
+        }
         
         // get stored time values
         int hour = clock.getHours();
@@ -76,7 +93,7 @@ public class ClockView extends PageView {
         // get digits from time
         int d0 = hour >= 10 ? hour/10: 0;
         int d1 = hour % 10;
-        int d2 = minute > 10 ? minute/10 : (minute == 10) ? 1 : 0;
+        int d2 = minute >= 10 ? minute/10 : 0;
         int d3 = minute % 10;
         char sep = (clock.getSeconds()%2==0) ? ':' : ' ';
 
@@ -85,9 +102,9 @@ public class ClockView extends PageView {
         
         // show weekday and meridian on correct digit
         clock.getDigits()[0].setText(10, days[clock.weekDay]);
-        clock.getDigits()[4].setText(10, clock.meridian);
-        
+        clock.getDigits()[4].setText(10, clock.meridian);      
     }
+    
     
     final String[] days = {
     "Sunday",

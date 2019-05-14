@@ -332,31 +332,31 @@ public class TestClock extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Event handlers">
     private void digit0TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit0TouchInitiated
-//        currentPage.touched(evt); 
+        currentView.touched(evt); 
     }//GEN-LAST:event_digit0TouchInitiated
     private void digit0TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit0TouchReleased
         currentView.touched(evt); 
     }//GEN-LAST:event_digit0TouchReleased
     private void digit1TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit1TouchInitiated
-//        currentPage.touched(evt); 
+        currentView.touched(evt); 
     }//GEN-LAST:event_digit1TouchInitiated
     private void digit1TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit1TouchReleased
         currentView.touched(evt); 
     }//GEN-LAST:event_digit1TouchReleased
     private void digit2TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit2TouchInitiated
-//        currentPage.touched(evt); 
+        currentView.touched(evt); 
     }//GEN-LAST:event_digit2TouchInitiated
     private void digit2TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit2TouchReleased
         currentView.touched(evt); 
     }//GEN-LAST:event_digit2TouchReleased
     private void digit3TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit3TouchInitiated
-//        currentPage.touched(evt); 
+        currentView.touched(evt); 
     }//GEN-LAST:event_digit3TouchInitiated
     private void digit3TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit3TouchReleased
         currentView.touched(evt); 
     }//GEN-LAST:event_digit3TouchReleased
     private void digit4TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit4TouchInitiated
-//        currentPage.touched(evt); 
+        currentView.touched(evt); 
     }//GEN-LAST:event_digit4TouchInitiated
     private void digit4TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit4TouchReleased
         currentView.touched(evt); 
