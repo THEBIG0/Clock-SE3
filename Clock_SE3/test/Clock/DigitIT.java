@@ -47,8 +47,12 @@ public class DigitIT {
     int i = 0;
     Digit instance = new Digit();
     instance.setDigit(i);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    
+    if (instance.getDigit()==i)
+    {
+     System.out.println("Set digit works as intended. ");
+    }
+    else {fail("The test case is a prototype.");}
   }
 
   /**
