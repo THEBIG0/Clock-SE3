@@ -29,7 +29,7 @@ public class ClockView extends PageView {
         touched = (Digit) touch.getSource();
         int region = touch.getTouched();
         if(region == -1) {
-            heldTime++;
+            heldTime = 0;
             return;
         }
         
