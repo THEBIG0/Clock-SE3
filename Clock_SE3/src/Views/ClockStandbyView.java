@@ -25,7 +25,14 @@ public class ClockStandbyView extends PageView {
      */
     @Override
     public void touched(TouchEvent touch) {
-        clock.toClock();
+        touched = (Digit) touch.getSource();
+        int region = touch.getTouched();
+        if(!(region == -1)) {
+            clock.toClock();
+            return;
+        }
+
+//        clock.toClock();
     }
     
     /**

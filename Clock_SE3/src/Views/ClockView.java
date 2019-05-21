@@ -41,14 +41,18 @@ public class ClockView extends PageView {
                     return;
             }
         }
-    // Check Digit 2 (Separator)
+        // Check Digit 2 (Separator)
         else if(heldTime > 2 && touched == clock.getDigits()[2]) {
             clock.toSetTime();
             return;
         }
         
-        else if(touched == clock.getDigits()[4]){
+        else if(region == 0 && touched == clock.getDigits()[4]){
             clock.toHelpView();
+            return;
+        }
+        if (!(region == -1)){
+            clock.toStandbyView();
             return;
         }
     }
@@ -87,7 +91,7 @@ public class ClockView extends PageView {
         if(heldTime > -1) heldTime++;
         
         // if held for longer than 2 seconds, emulate touch 
-        if(heldTime > 2) {
+        if(heldTime > 2 && touched == clock.getDigits()[2]) {
             touched(new TouchEvent(0, 0, touched));
             heldTime = -1;
             return;
@@ -104,7 +108,7 @@ public class ClockView extends PageView {
         int d2 = minute >= 10 ? minute/10 : 0;
         int d3 = minute % 10;
         char sep = (clock.getSeconds()%2==0) ? ':' : ' ';
-
+        
         // show time on digit display
         clock.showDigits(d0, d1, sep, d2, d3);
         

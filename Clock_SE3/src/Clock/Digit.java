@@ -174,7 +174,7 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
                 if(i != text.length()-1) {     // no newLine at end
                     textSpace.getDocument().insertString(0,  "\n", alignment);
                 }
-                textSpace.getDocument().insertString(0, text[i], alignment);
+                //textSpace.getDocument().insertString(0, text[i], alignment);
                 arr = textSpace.getText();
             } catch(BadLocationException e){
                 System.out.println("Invalid index for insertString()");
