@@ -24,6 +24,7 @@ public class TestClock extends javax.swing.JFrame {
     ClockView clockView;
     SettingsView settingsView;
     HelpView helpView;
+    ClockStandbyView standbyView;
     
     public enum colorScheme{
         HACKER,
@@ -43,8 +44,10 @@ public class TestClock extends javax.swing.JFrame {
         clockView = new ClockView(this);
         settingsView = new SettingsView(this);
         helpView = new HelpView(this);
+        standbyView = new ClockStandbyView(this);
         
-        toClock();
+        //toClock();
+        toStandbyView();
     } 
     
     /**
@@ -52,8 +55,11 @@ public class TestClock extends javax.swing.JFrame {
     */
     private void runEverySecond(){
         incrementTime();
-        if (currentView == clockView) currentView.show();
-        timer.setDelay(1000/clockSpeed); 
+        if(currentView == clockView || currentView == standbyView){
+            currentView.show();
+            timer.setDelay(1000/clockSpeed);            
+        }
+
     }
     
     /**
@@ -80,6 +86,11 @@ public class TestClock extends javax.swing.JFrame {
     
     public void toHelpView(){
         currentView = helpView;
+        currentView.show();
+    }
+    
+    public void toStandbyView(){
+        currentView = standbyView;
         currentView.show();
     }
 
