@@ -91,9 +91,8 @@ public class TestClockIT {
   @Test
   public void testSetColorScheme() {
     System.out.println("setColorScheme");
-    TestClock.colorScheme color = null;
     TestClock instance = new TestClock();
-    instance.setColorScheme(color);
+    instance.setColorScheme(instance.colors.BLACKWHITE);
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
