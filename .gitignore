@@ -1,3 +1,9 @@
-
 *.properties
-/Clock_SE3/dist/
+*.class
+Clock-SE3/nbproject/private/
+Clock-SE3/build/
+Clock-SE3/nbbuild/
+Clock-SE3/dist/
+Clock-SE3/nbdist/
+Clock-SE3/nbactions.xml
+Clock-SE3/nb-configuration.xml
