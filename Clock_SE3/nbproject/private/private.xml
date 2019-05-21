@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/JustT/Documents/CP3/lab1/Clock-SE3/Clock_SE3/build.xml</file>
-            <file>file:/C:/Users/JustT/Documents/CP3/lab1/Clock-SE3/Clock_SE3/src/Clock/TestClock.java</file>
-            <file>file:/C:/Users/JustT/Documents/CP3/lab1/Clock-SE3/Clock_SE3/src/Clock/TestClockDigit.java</file>
-            <file>file:/C:/Users/JustT/Documents/CP3/lab1/Clock-SE3/Clock_SE3/src/Views/PageView.java</file>
+            <file>file:/Users/Sam/Documents/Software/Clock-SE3/Clock-SE3/Clock_SE3/test/Clock/TestClockIT.java</file>
+            <file>file:/Users/Sam/Documents/Software/Clock-SE3/Clock-SE3/Clock_SE3/src/Clock/TestClock.java</file>
+            <file>file:/Users/Sam/Documents/Software/Clock-SE3/Clock-SE3/Clock_SE3/src/Views/SettingsView.java</file>
         </group>
     </open-files>
 </project-private>
