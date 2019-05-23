@@ -11,40 +11,37 @@ import Clock.*;
  * @author Lachlan
  */
 
-public class SettingsView extends PageView {
-        TestClock.colorScheme colors;    
-    private TestClock clock;
+public class SettingsView extends ClockView {
+    TestClock.colorScheme colors;
     
     /**
      * Creates new View
      * @param clock the parent clock model
      */
     public SettingsView(TestClock clock) {
-        this.clock = clock;
+        super(clock);
     }
     
     /**
      * Handles touch events directed at this View
-     * @param touch the touch event to parse.
+     * @param digit the digit that was touched
+     * @param region the row of the digit that was touched
      */
     @Override
-    public void touched(bgi.TouchEvent touch){
-        int region = touch.getTouched();
-        Digit touched = (Digit) touch.getSource();
+    public void touched(Digit digit, int region){
         
-
     // Check Digit 0
-        if(touched == clock.getDigits()[0]){
+        if(digit == clock.getDigits()[0]){
             
             switch(region) {
                 //Exit button pressed
                 case 0:
-                    clock.toClock();
+                    clock.toClockMenu();
                     return;
             }
         }
     // Check Digit 1
-        else if(touched == clock.getDigits()[1]){
+        else if(digit == clock.getDigits()[1]){
             switch(region){
                 // Hacker pressed
                 case 3:

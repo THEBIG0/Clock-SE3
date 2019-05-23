@@ -1,21 +1,27 @@
 package Views;
 
-import Clock.Digit;
-import Clock.TestClock;
-import bgi.*;
+import Clock.*;
+import java.time.LocalTime;
 
 /**
  * @author Sam
  */
-public class ClockStandbyView extends ClockView {
+public class SetAlarmView extends SetTimeView {
+    
+    Alarm alarm;
+    boolean[] days = new boolean[7];
+    LocalTime alarmTime;
     
     /**
      * Creates new View
      * @param clock the parent clock model
      */
-    public ClockStandbyView(TestClock clock) {
+    public SetAlarmView(TestClock clock, Alarm a) {
         super(clock);
+        alarmTime = alarm.time;
+        this.alarm = a;
     }
+
     
     /**
      * Handles touch events directed at this View
@@ -24,7 +30,7 @@ public class ClockStandbyView extends ClockView {
      */
     @Override
     public void touched(Digit digit, int region) {
-        clock.toClockMenu();
+        //TODO: copy touch stuff over from setTime, should be similar
     }
     
     /**
@@ -33,16 +39,10 @@ public class ClockStandbyView extends ClockView {
     
     @Override
     public void show() {
+        // display same beginning interface as SetTimeView
+        super.show();
         
-        // Clear all text and set alignment
-        for(Digit d: clock.getDigits()) {
-            d.clearText();
-            d.setTextAlignment(1);
-            d.setChar(' ');
-        }
-        
-        // Update the time and day
-        update();
+        //TODO: adjust interface
     }
 
     /**
@@ -51,16 +51,12 @@ public class ClockStandbyView extends ClockView {
      */
     @Override()
     public void update() {
-        
         // show time on digit display
-        showTime(clock.getTime());
+        showTime(alarmTime);
+        showSeparator(' ');
         
-        // show weekday on correct digit
-        clock.getDigits()[0].setText(10, DAYS[clock.getWeekDay()]);
-        
-        char sep = clock.getTime().getSecond()%2==0 ? ' ' : ':';
-        
-        showSeparator(sep);
+        //TODO: show weekday selector on multiple days, as each alarm can run
+        //      on multiple days
     }
     
 }

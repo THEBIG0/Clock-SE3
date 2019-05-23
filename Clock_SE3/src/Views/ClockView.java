@@ -1,128 +1,103 @@
-package Views;
 
-import Clock.Digit;
-import Clock.TestClock;
-import bgi.*;
+package Views;
+import Clock.*;
+import java.time.LocalTime;
 
 /**
  * @author Sam
+ * 
+ * This abstract class handles the display of each view. It contains display
+ * methods that can be used by each subclass, but the touched(), show(), and
+ * update() methods must be overridden when extended.
+ * 
+ * Current subclass structure:
+ * PageView
+ * |   SettingsView
+ * |   AlarmListView
+ * |   TriggeredAlarmView
+ * |   ClockView
+ * |   |   ClockMenuView
+ * |   |   |   HelpView
+ * |   SetTimeView
+ * |   |   SetAlarmsView
+ * 
+ * 
  */
-public class ClockView extends PageView {
-    TestClock clock;
-    Digit touched;
-    double heldTime = -1;
+
+public abstract class ClockView {
     
-    /**
-     * Creates new View
-     * @param clock the parent clock model
-     */
+    TestClock clock;
+    
     public ClockView(TestClock clock) {
         this.clock = clock;
     }
     
     /**
      * Handles touch events directed at this View
-     * @param touch the touch event to parse.
+     * @param digit the digit that was touched
+     * @param region the row of the digit that was touched
      */
-    @Override
-    public void touched(TouchEvent touch) {
-        touched = (Digit) touch.getSource();
-        int region = touch.getTouched();
-        if(region == -1) {
-            heldTime = 0;
-            return;
-        }
-        
-    // Check Digit 0
-        if(touched == clock.getDigits()[0]) {
-            switch(region) {
-                case 0:
-                    clock.toSettings();
-                    return;
-            }
-        }
-        // Check Digit 2 (Separator)
-        else if(heldTime > 2 && touched == clock.getDigits()[2]) {
-            clock.toSetTime();
-            return;
-        }
-        
-        else if(region == 0 && touched == clock.getDigits()[4]){
-            clock.toHelpView();
-            return;
-        }
-        if (!(region == -1)){
-            clock.toStandbyView();
-            return;
-        }
-    }
-    
+    public abstract void touched(Digit digit, int region);
+
     /**
      * Initialises the View interface
      */
+    public abstract void show();
     
-    @Override
-    public void show() {
-        
-        // Clear all text and set alignment
-        for(Digit d: clock.getDigits()) {
-            d.clearText();
-            d.setTextAlignment(1);
-        }
-
-        // Show buttons
-        clock.getDigits()[0].setText(0, "Settings" );
-
-        // Show help button
-        clock.getDigits()[4].setText(0, "?");
-        
-        // Update the time and day
-        update();
-    }
-
     /**
-     * Makes minimal neccessary changes, does not redisplay entire View.
-     * Generally set to run every second.
+     * Makes minimal necesary changes, does not redisplay entire View
      */
-    @Override()
-    public void update() {
+    public abstract void update();
+    
+    /**
+     * Show specified digits (and char) on each digit, in order from left to right.
+     * @param d0 first digit to display
+     * @param d1 second digit to display
+     * @param d2 third digit to display
+     * @param d3 fourth digit to display
+     */
+    public void showDigits(int d0, int d1, int d2, int d3) {
+        clock.getDigits()[0].setDigit(d0);
+        clock.getDigits()[1].setDigit(d1);
+        clock.getDigits()[3].setDigit(d2);
+        clock.getDigits()[4].setDigit(d3);
+    }
+    
+    public void showSeparator(char sep) {
+        clock.getDigits()[2].setChar(sep);
+    }
+    
+    /**
+     * Update display with time. Adjusts for AM/PM, 24-12 hour
+     * @param time, the time to show
+     * @param twelveHour
+     */
+    public void showTime(LocalTime time) {
+        int hour = time.getHour();
+        int minute = time.getMinute();
+        String meridian = "";
         
-        // increment heldtime if started
-        if(heldTime > -1) heldTime++;
-        
-        // if held for longer than 2 seconds, emulate touch 
-        if(heldTime > 2 && touched == clock.getDigits()[2]) {
-            touched(new TouchEvent(0, 0, touched));
-            heldTime = -1;
-            return;
+        if(clock.isTwelveHour()) {
+            meridian = hour < 12 ? "AM" : "PM";
+            if(hour == 0) hour = 12;
+            hour = hour > 12 ? hour-12: hour;
         }
         
-        // get stored time values
-        int hour = clock.getHours();
-        int minute = clock.getMinutes();
-        if (hour > 12) hour -= 12;
-        
-        // get digits from time
         int d0 = hour >= 10 ? hour/10: 0;
         int d1 = hour % 10;
         int d2 = minute >= 10 ? minute/10 : 0;
         int d3 = minute % 10;
-        char sep = (clock.getSeconds()%2==0) ? ':' : ' ';
-        
-        // show time on digit display
-        clock.showDigits(d0, d1, sep, d2, d3);
-        
-        // show weekday and meridian on correct digit
-        clock.getDigits()[0].setText(10, days[clock.weekDay]);
-        clock.getDigits()[4].setText(10, clock.meridian);      
+
+        clock.getDigits()[4].setText(10, meridian);
+        showDigits(d0, d1, d2, d3);
     }
     
     
-    final String[] days = {
+    static final String[] DAYS = {
     "Sunday",
     "Monday",    "Tuesday", 
     "Wednesday", "Thursday", 
     "Friday",    "Saturday",
     };
-}
 
+}

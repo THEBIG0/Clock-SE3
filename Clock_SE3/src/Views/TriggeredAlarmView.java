@@ -2,18 +2,19 @@ package Views;
 
 import Clock.Digit;
 import Clock.TestClock;
-import bgi.*;
 
 /**
  * @author Sam
+ * 
+ * The actual alarm shown when an alarm is going off.
  */
-public class ClockStandbyView extends ClockView {
+public class TriggeredAlarmView extends ClockView {
     
     /**
      * Creates new View
      * @param clock the parent clock model
      */
-    public ClockStandbyView(TestClock clock) {
+    public TriggeredAlarmView(TestClock clock) {
         super(clock);
     }
     
@@ -24,13 +25,14 @@ public class ClockStandbyView extends ClockView {
      */
     @Override
     public void touched(Digit digit, int region) {
-        clock.toClockMenu();
+        //TODO: Stop alarm if screen is touched, for now.
+        //      Hold for snooze can be added after.
+        
     }
     
     /**
      * Initialises the View interface
      */
-    
     @Override
     public void show() {
         
@@ -41,8 +43,8 @@ public class ClockStandbyView extends ClockView {
             d.setChar(' ');
         }
         
-        // Update the time and day
-        update();
+        // TODO: Show day of week during alarm
+        
     }
 
     /**
@@ -51,16 +53,10 @@ public class ClockStandbyView extends ClockView {
      */
     @Override()
     public void update() {
-        
-        // show time on digit display
-        showTime(clock.getTime());
-        
-        // show weekday on correct digit
-        clock.getDigits()[0].setText(10, DAYS[clock.getWeekDay()]);
-        
-        char sep = clock.getTime().getSecond()%2==0 ? ' ' : ':';
-        
-        showSeparator(sep);
+       // TODO: toggle between showing the time and ALARM on display
+       //       - could use the fact that update() is called once per second
+       //       - maybe add a function for playing sound
+       //       - stop after certain number of seconds
     }
     
 }

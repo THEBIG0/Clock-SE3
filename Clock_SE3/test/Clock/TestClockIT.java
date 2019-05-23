@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.time.LocalTime;
 
 /**
  *
@@ -36,19 +37,56 @@ public class TestClockIT {
   @After
   public void tearDown() {
   }
+  
+  
 
   /**
-   * Test of toClock method, of class TestClock.
+   * Test of toClockStandby method, of class TestClock.
    */
   @Test
-  public void testToClock() {
-    System.out.println("toClock");
+  public void testToClockStandBy() {
+    System.out.println("toClockStandby");
     TestClock instance = new TestClock();
-    instance.toClock();
+    instance.toClockStandby();
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
-
+  
+  /**
+   * Test of toClockMenu method, of class TestClock.
+   */
+  @Test
+  public void testToClockMenu() {
+    System.out.println("toClockMenu");
+    TestClock instance = new TestClock();
+    instance.toClockMenu();
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+  
+  /**
+   * Test of toHelp method, of class TestClock.
+   */
+  @Test
+  public void testToHelp() {
+    System.out.println("toHelp");
+    TestClock instance = new TestClock();
+    instance.toHelp();
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+    /**
+   * Test of toClockStandby method, of class TestClock.
+   */
+  @Test
+  public void testToClockStandby() {
+    System.out.println("toClockStandby");
+    TestClock instance = new TestClock();
+    instance.toClockStandby();
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+  
   /**
    * Test of toSetTime method, of class TestClock.
    */
@@ -92,7 +130,7 @@ public class TestClockIT {
   public void testSetColorScheme() {
     System.out.println("setColorScheme");
     TestClock instance = new TestClock();
-    instance.setColorScheme(instance.colors.BLACKWHITE);
+    instance.setColorScheme(instance.getColorScheme().BLACKWHITE);
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
@@ -111,103 +149,109 @@ public class TestClockIT {
     fail("The test case is a prototype.");
   }
 
-  /**
-   * Test of showDigits method, of class TestClock.
-   */
-  @Test
-  public void testShowDigits() {
-    System.out.println("showDigits");
-    int d0 = 0;
-    int d1 = 0;
-    char sep = ' ';
-    int d2 = 0;
-    int d3 = 0;
-    TestClock instance = new TestClock();
-    instance.showDigits(d0, d1, sep, d2, d3);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-  }
 
   /**
-   * Test of getHours method, of class TestClock.
+   * Test of getTime method, of class TestClock.
    */
   @Test
-  public void testGetHours() {
-    System.out.println("getHours");
+  public void testGetTime() {
+    System.out.println("getTime");
     TestClock instance = new TestClock();
-    int expResult = 0;
-    int result = instance.getHours();
+    LocalTime expResult = null;
+    LocalTime result = instance.getTime();
     assertEquals(expResult, result);
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
 
   /**
-   * Test of setHours method, of class TestClock.
+   * Test of setTime method, of class TestClock.
    */
   @Test
-  public void testSetHours() {
-    System.out.println("setHours");
-    int hour = 0;
+  public void testSetTime() {
+    System.out.println("setTime");
+    LocalTime time = null;
     TestClock instance = new TestClock();
-    instance.setHours(hour);
+    instance.setTime(time);
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
 
   /**
-   * Test of getMinutes method, of class TestClock.
+   * Test of setSetWeekDay method, of class TestClock.
    */
   @Test
-  public void testGetMinutes() {
-    System.out.println("getMinutes");
+  public void testSetWeekDay() {
+    System.out.println("setWeekDay");
+    int day = 0;
     TestClock instance = new TestClock();
-    int expResult = 0;
-    int result = instance.getMinutes();
-    assertEquals(expResult, result);
+    instance.setWeekDay(day);
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
 
   /**
-   * Test of setMinutes method, of class TestClock.
+   * Test of setTime method, of class TestClock.
    */
   @Test
-  public void testSetMinutes() {
-    System.out.println("setMinutes");
-    int minutes = 0;
+  public void testGetWeekDay() {
+    System.out.println("getWeekDay");
     TestClock instance = new TestClock();
-    instance.setMinutes(minutes);
+    instance.getWeekDay();
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
 
   /**
-   * Test of getSeconds method, of class TestClock.
+   * Test of setTime method, of class TestClock.
    */
   @Test
-  public void testGetSeconds() {
-    System.out.println("getSeconds");
+  public void testSetClockSpeed() {
+    System.out.println("setClockSpeed");
     TestClock instance = new TestClock();
-    int expResult = 0;
-    int result = instance.getSeconds();
-    assertEquals(expResult, result);
+    int speed = 0;
+    instance.setClockSpeed(speed);
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
 
   /**
-   * Test of setSeconds method, of class TestClock.
+   * Test of setTime method, of class TestClock.
    */
-  @Test
-  public void testSetSeconds() {
-    System.out.println("setSeconds");
-    int seconds = 0;
+  @Test  
+  public void testGetClockSpeed() {
+    System.out.println("getClockSpeed");
     TestClock instance = new TestClock();
-    instance.setSeconds(seconds);
+    instance.getClockSpeed();
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
+
+  /**
+   * Test of setTime method, of class TestClock.
+   */
+  @Test
+  public void testSetTwelveHour() {
+    System.out.println("setTwelveHour");
+    boolean value = true;
+    TestClock instance = new TestClock();
+    instance.setTwelveHour(value);
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+
+  /**
+   * Test of setTime method, of class TestClock.
+   */
+  @Test
+  public void testIsTwelveHour() {
+    System.out.println("setTime");
+    TestClock instance = new TestClock();
+    instance.isTwelveHour();
+    // TODO review the generated test code and remove the default call to fail.
+    fail("The test case is a prototype.");
+  }
+
 
   /**
    * Test of main method, of class TestClock.

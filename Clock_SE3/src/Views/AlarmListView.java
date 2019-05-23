@@ -6,14 +6,18 @@ import bgi.*;
 
 /**
  * @author Sam
+ * 
+ * Shows a list of each alarm that is set: shows time and days for each alarm
+ * TODO: implement display, implement touch
+ * 
  */
-public class ClockStandbyView extends ClockView {
+public class AlarmListView extends ClockView {
     
     /**
      * Creates new View
      * @param clock the parent clock model
      */
-    public ClockStandbyView(TestClock clock) {
+    public AlarmListView(TestClock clock) {
         super(clock);
     }
     
@@ -24,7 +28,8 @@ public class ClockStandbyView extends ClockView {
      */
     @Override
     public void touched(Digit digit, int region) {
-        clock.toClockMenu();
+        //TODO: Add exit button
+        //TODO: go to Set alarm when alarm is touched
     }
     
     /**
@@ -41,8 +46,8 @@ public class ClockStandbyView extends ClockView {
             d.setChar(' ');
         }
         
-        // Update the time and day
-        update();
+        //TODO: display list interface
+        
     }
 
     /**
@@ -52,15 +57,6 @@ public class ClockStandbyView extends ClockView {
     @Override()
     public void update() {
         
-        // show time on digit display
-        showTime(clock.getTime());
-        
-        // show weekday on correct digit
-        clock.getDigits()[0].setText(10, DAYS[clock.getWeekDay()]);
-        
-        char sep = clock.getTime().getSecond()%2==0 ? ' ' : ':';
-        
-        showSeparator(sep);
     }
     
 }

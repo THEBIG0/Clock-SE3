@@ -160,7 +160,7 @@ public class Digit extends javax.swing.JLayeredPane implements TouchDigit {
         return rows;
     }
     
-    public void setColorSpecific(int start, int end){
+    public void setColorSpecific(int start, int end){  
         String text = "";
         text += "<html><span style=\"color:red\"> TEST TEXT </span>";      
         

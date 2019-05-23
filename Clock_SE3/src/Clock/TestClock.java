@@ -5,34 +5,36 @@ import java.time.LocalTime;
 import javax.swing.Timer;
 import java.awt.event.*;
 import java.util.Calendar;
+import java.util.ArrayList;
 
 
 /**
- * @author Owen
+ * @author Owen, Sam, Lachie
+ * 
+ * This class contains global storage and data manipulation methods for the
+ * clock. There are no display methods, they are all contained in ClockView or
+ * a subclass of ClockView. The colour scheme is here as an exception, as it is
+ * changed globally.
+ * 
  */
 public class TestClock extends javax.swing.JFrame { 
     
-    public int weekDay;
-    Timer timer;
-    public int clockSpeed;
-    LocalTime currentTime;
-    public String meridian = "AM";
-    int hour, minutes, seconds;
+    int weekDay;
+    LocalTime time;
+    Timer timer;    
+    boolean twelveHour = true;
+    ArrayList<Alarm> alarms = new ArrayList<>();
     
-    PageView currentView;
-    SetTimeView setTimeView;
-    ClockView clockView;
-    SettingsView settingsView;
-    HelpView helpView;
-    ClockStandbyView standbyView;
+    // Abstract class ClockView is placeholder variable
+    ClockView currentView;
     
-    public enum colorScheme{
+    public enum colorScheme {
         HACKER,
         SLATE,
         WHITEBLACK,
         BLACKWHITE,
     }
-    public colorScheme colors;
+    colorScheme colors = colorScheme.HACKER;
     
     /**
      * Creates new form TestClock
@@ -40,104 +42,102 @@ public class TestClock extends javax.swing.JFrame {
     public TestClock() {
         initComponents();
         initTime();
-        setTimeView = new SetTimeView(this);
-        clockView = new ClockView(this);
-        settingsView = new SettingsView(this);
-        helpView = new HelpView(this);
-        standbyView = new ClockStandbyView(this);
-        
-        //toClock();
-        toStandbyView();
+        toClockStandby();
     } 
     
     /**
-    * All code to be run on timer interval.
+    * All code to be run each second
     */
     private void runEverySecond(){
         incrementTime();
-        if(currentView == clockView || currentView == standbyView){
-            currentView.show();
-            timer.setDelay(1000/clockSpeed);            
-        }
+        currentView.update();
+        if(time.getSecond() == 0) pollAlarms();
+    }
+    
+    /**
+     * Display, and pass control to each respective view 
+     */
+    public void toClockStandby() {
+        currentView = new ClockStandbyView(this);
+        currentView.show();
+    }
+    public void toClockMenu() {
+        currentView = new ClockMenuView(this);
+        currentView.show();
+    }
+    public void toHelp() {
+        currentView = new HelpView(this);
+        currentView.show();
+    }
+    public void toTriggeredAlarm() {
+        currentView = new TriggeredAlarmView(this);
+        currentView.show();
+    }
+    public void toAlarmList() {
+        currentView = new AlarmListView(this);
+        currentView.show();
+    }
+    public void toSetAlarm(Alarm a) {
+        currentView = new SetAlarmView(this, a);
+        currentView.show();
+    }
+    public void toSetTime() {
+        currentView = new SetTimeView(this);
+        currentView.show();
+    }
+    public void toSettings() {
+        currentView = new SettingsView(this);
+        currentView.show();
+    }
+    
 
-    }
-    
-    /**
-     * Display, and pass control to Clock page. 
-     */
-    public void toClock() {
-        currentView = clockView;
-        currentView.show();
-    }
-    /**
-     * Display, and pass control to SetTime page. 
-     */
-    public void toSetTime(){
-        currentView = setTimeView;
-        currentView.show();
-    }
-    /**
-     * Display, and pass control to Settings page. 
-     */
-    public void toSettings(){
-        currentView = settingsView;
-        currentView.show();
-    }
-    
-    public void toHelpView(){
-        currentView = helpView;
-        currentView.show();
-    }
-    
-    public void toStandbyView(){
-        currentView = standbyView;
-        currentView.show();
-    }
-
-        
-    /**
-    * Increment seconds and adjust minute/hour/day for overflow
+   /**
+    * Increment seconds and adjust weekDay
     */
     public void incrementTime() {
-        
-        seconds++;
-        
-        if(seconds == 60) {
-            minutes++;
-            seconds = 0;
-        
-            if(minutes == 60) {
-                hour++;
-                minutes = 0;
-                
-                if(hour > 12) {
-                    hour = 1;
-                }
-                
-                if(hour == 12) {
-                    if(meridian.compareTo("AM")==0) {
-                        meridian = "PM";
-                    } else {
-                        meridian = "AM";
-                        weekDay = (weekDay + 1) % 7;
-                    }
-                }
+        LocalTime previous = time;
+        time = time.plusSeconds(1);
+        if(time.isBefore(previous)) {
+            weekDay = ++weekDay % 7;
+        } 
+    }
+    
+    /**
+    * Check if any of the stored alarms are set to trigger at the current time
+    * If so, show the Alarm view
+    */
+    public void pollAlarms() {
+        for(Alarm a: alarms) {
+            if(a.check(time, weekDay)) {
+                toTriggeredAlarm();
+                return;
             }
         }
     }
     
+    // <editor-fold defaultstate="collapsed" desc="Getters and Setters.">    
+    
      /**
-     * Adjust the color scheme for all the digits.
+     * Adjust the color scheme for all the digits globally.
      * @param color the color scheme to set all digits to
      */
     public void setColorScheme(colorScheme color){
+        colors = color;
         for(Digit d: getDigits()) {
             d.setColor(color);
         }
     }
     
     /**
-     * @return Digit[] array of all digits, in order from left to right.
+     * Get the enum corresponding to the current colour scheme
+     */
+    public colorScheme getColorScheme(){
+        return colors;
+    }
+    
+    /**
+     * @return Digit[] array of all digits (including separator), in order from
+     * left to right.
      */
     public Digit[] getDigits() {
         Digit[] darr = {
@@ -151,71 +151,72 @@ public class TestClock extends javax.swing.JFrame {
     }
     
     /**
-     * Show specified digits (and char) on each digit, in order from left to right.
-     * @param d0 first digit to display
-     * @param d1 second digit to display
-     * @param sep separator character
-     * @param d2 third digit to display
-     * @param d3 fourth digit to display
+     * Set the time of the clock
+     * @param newTime the LocalTime variable to set the time to.
      */
-    public void showDigits(int d0, int d1, char sep, int d2, int d3) {
-        getDigits()[0].setDigit(d0);
-        getDigits()[1].setDigit(d1);
-        getDigits()[2].setChar(sep);
-        getDigits()[3].setDigit(d2);
-        getDigits()[4].setDigit(d3);
+    public void setTime(LocalTime newTime) {
+        time = newTime;
     }
     
     /**
-     * @return current stored value of hours
+     * @return the LocalTime variable stored as the current time.
      */
-    public int getHours(){
-        return hour;
+    public LocalTime getTime() {
+        return time;
     }
+    
     /**
-     * Sets the stored hours to int parameter.
-     * @param hour the value to set
+     * Set the current weekday, indexed from 0-6 with Sunday = 0
+     * @param day the index of the day to be set
      */
-    public void setHours(int hour){
-        this.hour = hour;
+    public void setWeekDay(int day) {
+        this.weekDay = day;
     }
+    
     /**
-     * @return current stored value of minutes
+     * @return the index of the current stored weekday.
      */
-    public int getMinutes(){
-        return minutes;
+    public int getWeekDay() {
+        return weekDay;
     }
+    
     /**
-     * Sets the stored minutes to int parameter.
-     * @param minutes the value to set
+     * Sets the clock speed
+     * @param factor the speed scale factor to be applied
      */
-    public void setMinutes(int minutes){
-        this.minutes = minutes;
+    public void setClockSpeed(int factor) {
+        timer.setDelay(1000/factor); 
     }
+    
     /**
-     * @return current stored value of seconds
+     * @return the speed at which the clock is currently running. 1 = realtime.
      */
-    public int getSeconds(){
-        return seconds;
+    public int getClockSpeed() {
+        return 1000/timer.getDelay(); 
     }
+    
     /**
-     * Sets the stored seconds to int parameter.
-     * @param seconds the value to set
+     * Set the clock display to either 12 or 24 hour
+     * @param value set true for 12-hour, false for 24-hour
      */
-    public void setSeconds(int seconds){
-        this.seconds = seconds;
+    public void setTwelveHour(boolean value) {
+        twelveHour = value;
     }
+    
+    /**
+     * @return true iff the clock is in 12-hour mode.
+     */
+    public boolean isTwelveHour() {
+        return twelveHour;
+    }
+    
+    // </editor-fold>
    
-    
     /**
     * Initialise all time variables and start timer.
     */
     private void initTime() {
-        clockSpeed = 1;
-        weekDay = 0;
-        currentTime = LocalTime.now();
-        
-        
+        time = LocalTime.now();
         
         // Not the pretiest thing but it'll do
         Calendar cal = Calendar.getInstance();
@@ -223,21 +224,8 @@ public class TestClock extends javax.swing.JFrame {
         weekDay = day;
         weekDay--; // Day is 1 indexed, we use 0 indexed so decrement one.
         
-        hour = (currentTime.getHour()%12 == 0) ? 12 : currentTime.getHour() % 12;
-        if(currentTime.getHour() >= 12){
-            meridian = "PM";
-        }else{
-            meridian = "AM";
-        }
-        
-        minutes = currentTime.getMinute();
-        seconds = currentTime.getSecond(); 
-        
-        
-        timer = new Timer(1000/clockSpeed, new ActionListener(){
-            //this code will run every second, sped up by a factor of clockSpeed
-            @Override
-            public void actionPerformed(ActionEvent evt) {runEverySecond();}
+        timer = new Timer(1000, (ActionEvent evt) -> {
+            runEverySecond();
         });
         timer.start();
     }
@@ -349,34 +337,34 @@ public class TestClock extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Event handlers">
     private void digit0TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit0TouchInitiated
-        currentView.touched(evt); 
+//        currentView.touched(evt); 
     }//GEN-LAST:event_digit0TouchInitiated
     private void digit0TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit0TouchReleased
-        currentView.touched(evt); 
+        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
     }//GEN-LAST:event_digit0TouchReleased
     private void digit1TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit1TouchInitiated
-        currentView.touched(evt); 
+//        currentView.touched(evt); 
     }//GEN-LAST:event_digit1TouchInitiated
     private void digit1TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit1TouchReleased
-        currentView.touched(evt); 
+        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
     }//GEN-LAST:event_digit1TouchReleased
     private void digit2TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit2TouchInitiated
-        currentView.touched(evt); 
+//        currentView.touched(evt); 
     }//GEN-LAST:event_digit2TouchInitiated
     private void digit2TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit2TouchReleased
-        currentView.touched(evt); 
+        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
     }//GEN-LAST:event_digit2TouchReleased
     private void digit3TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit3TouchInitiated
-        currentView.touched(evt); 
+//        currentView.touched(evt); 
     }//GEN-LAST:event_digit3TouchInitiated
     private void digit3TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit3TouchReleased
-        currentView.touched(evt); 
+        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
     }//GEN-LAST:event_digit3TouchReleased
     private void digit4TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit4TouchInitiated
-        currentView.touched(evt); 
+//        currentView.touched(evt); 
     }//GEN-LAST:event_digit4TouchInitiated
     private void digit4TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit4TouchReleased
-        currentView.touched(evt); 
+        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
     }//GEN-LAST:event_digit4TouchReleased
     // </editor-fold> 
        
