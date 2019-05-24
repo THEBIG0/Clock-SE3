@@ -39,9 +39,15 @@ public class TriggeredAlarmView extends ClockView {
         // Clear all text and set alignment
         for(Digit d: clock.getDigits()) {
             d.clearText();
-            d.setTextAlignment(1);
+            d.setTextAlignment(0);
             d.setChar(' ');
         }
+        clock.getDigits()[0].setChar('a');
+        clock.getDigits()[1].setChar('l');
+        clock.getDigits()[2].setChar('a');
+        clock.getDigits()[3].setChar('r');
+        clock.getDigits()[4].setChar('m');
+        //clock.setClockSpeed(0);
         
         // TODO: Show day of week during alarm
         

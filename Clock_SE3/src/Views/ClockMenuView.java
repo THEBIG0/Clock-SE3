@@ -35,9 +35,16 @@ public class ClockMenuView extends ClockStandbyView {
             }
         }
     // Check Digit 2
-        else if(digit == clock.getDigits()[2] && region == 0) {
-            clock.toSetTime();
-            return;
+        else if(digit == clock.getDigits()[2]) {
+            switch(region){
+                case 0:
+                    clock.toSetTime();
+                    return;                    
+                default:
+                    clock.toAlarmList();
+                    return;
+            }
+
         }
     // Check Digit 4
         else if(digit == clock.getDigits()[4] && region == 0) {
@@ -62,6 +69,10 @@ public class ClockMenuView extends ClockStandbyView {
 
         // Show help button
         clock.getDigits()[4].setText(0, "?");
+        
+        
+        clock.getDigits()[2].setText(10, "Set Alarm");
+        
         
         // Update the time and day using parent update method
         update();

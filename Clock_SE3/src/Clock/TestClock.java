@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * 
  * This class contains global storage and data manipulation methods for the
  * clock. There are no display methods, they are all contained in ClockView or
- * a subclass of ClockView. The colour scheme is here as an exception, as it is
+ * a subclass of ClockView. The color scheme is here as an exception, as it is
  * changed globally.
  * 
  */
@@ -28,6 +28,9 @@ public class TestClock extends javax.swing.JFrame {
     // Abstract class ClockView is placeholder variable
     ClockView currentView;
     
+    /**
+     * Enumeration of the available color schemes.
+     */
     public enum colorScheme {
         HACKER,
         SLATE,
@@ -41,7 +44,8 @@ public class TestClock extends javax.swing.JFrame {
      */
     public TestClock() {
         initComponents();
-        initTime();
+        initTime();        
+        initAlarms();
         toClockStandby();
     } 
     
@@ -51,7 +55,7 @@ public class TestClock extends javax.swing.JFrame {
     private void runEverySecond(){
         incrementTime();
         currentView.update();
-        if(time.getSecond() == 0) pollAlarms();
+        if(time.getSecond() % 10 == 0) pollAlarms();
     }
     
     /**
@@ -77,8 +81,8 @@ public class TestClock extends javax.swing.JFrame {
         currentView = new AlarmListView(this);
         currentView.show();
     }
-    public void toSetAlarm(Alarm a) {
-        currentView = new SetAlarmView(this, a);
+    public void toSetAlarm(Alarm a, int alarmNum) {
+        currentView = new SetAlarmView(this, a, alarmNum);
         currentView.show();
     }
     public void toSetTime() {
@@ -129,7 +133,8 @@ public class TestClock extends javax.swing.JFrame {
     }
     
     /**
-     * Get the enum corresponding to the current colour scheme
+     * Get the enum corresponding to the current color scheme
+     * @return 
      */
     public colorScheme getColorScheme(){
         return colors;
@@ -189,7 +194,7 @@ public class TestClock extends javax.swing.JFrame {
     }
     
     /**
-     * @return the speed at which the clock is currently running. 1 = realtime.
+     * @return the speed at which the clock is currently running. 1 = real time.
      */
     public int getClockSpeed() {
         return 1000/timer.getDelay(); 
@@ -204,16 +209,33 @@ public class TestClock extends javax.swing.JFrame {
     }
     
     /**
-     * @return true iff the clock is in 12-hour mode.
+     * @return true if the clock is in 12-hour mode.
      */
     public boolean isTwelveHour() {
         return twelveHour;
     }
     
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Alarm> getAlarms(){
+        return alarms;
+    }
+    
+    /**
+     *
+     * @param alarmNum
+     * @param newAlarm
+     */
+    public void setAlarm(int alarmNum, Alarm newAlarm){
+        alarms.set(alarmNum, newAlarm);
+    }
+    
     // </editor-fold>
    
     /**
-    * Initialise all time variables and start timer.
+    * initialize all time variables and start timer.
     */
     private void initTime() {
         time = LocalTime.now();
@@ -230,6 +252,16 @@ public class TestClock extends javax.swing.JFrame {
         timer.start();
     }
 
+    private void initAlarms(){
+        boolean  temp[] = {true, true, true, true, true, true, true};
+        for(int i = 0; i < 10; i++){
+            //alarms.add(new Alarm(0, LocalTime.parse("06:00")));
+       alarms.add(new Alarm(temp, LocalTime.parse("06:00")));
+            
+            
+        }
+    }
+    
     
     /*
      * This method is called from within the constructor to initialize the form.
