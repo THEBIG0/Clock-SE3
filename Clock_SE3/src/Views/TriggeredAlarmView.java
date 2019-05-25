@@ -26,9 +26,9 @@ public class TriggeredAlarmView extends ClockView {
      */
     @Override
     public void touched(Digit digit, int region) {
-        //TODO: Stop alarm if screen is touched, for now.
+        //Stop alarm if screen is touched.
         //      Hold for snooze can be added after.
-        
+        AudioPlayer.player.stop(audioStream);
     }
     
     /**
@@ -49,7 +49,10 @@ public class TriggeredAlarmView extends ClockView {
         clock.getDigits()[3].setChar('r');
         clock.getDigits()[4].setChar('m');
         //clock.setClockSpeed(0);
-        
+        //plays Sound
+        playSound();
+        //stops Sound after period of time
+        stopSound();
         // TODO: Show day of week during alarm
         
     }
@@ -63,9 +66,9 @@ public class TriggeredAlarmView extends ClockView {
        // TODO: toggle between showing the time and ALARM on display
        //       - could use the fact that update() is called once per second
        //       - maybe add a function for playing sound
-       playSound();
+       //playSound();
        //       - stop after certain number of seconds
-       stopSound();
+       //stopSound();
     }
     
     /**
