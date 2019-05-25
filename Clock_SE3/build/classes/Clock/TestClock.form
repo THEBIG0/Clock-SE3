@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.9" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+              <Component id="digitCell" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+              <Component id="digitCell" min="-2" pref="308" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="digitCell">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[770, 32767]"/>
+        </Property>
+        <Property name="opaque" type="boolean" value="false"/>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
+      </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleParent" type="javax.accessibility.Accessible" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="digitCell"/>
+        </Property>
+      </AccessibilityProperties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+        <Property name="columns" type="int" value="0"/>
+        <Property name="rows" type="int" value="1"/>
+      </Layout>
+      <SubComponents>
+        <Component class="Clock.Digit" name="digit0">
+          <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit0TouchInitiated"/>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit0TouchReleased"/>
+          </Events>
+        </Component>
+        <Component class="Clock.Digit" name="digit1">
+          <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit1TouchInitiated"/>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit1TouchReleased"/>
+          </Events>
+        </Component>
+        <Component class="Clock.Digit" name="digit2">
+          <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit2TouchInitiated"/>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit2TouchReleased"/>
+          </Events>
+        </Component>
+        <Component class="Clock.Digit" name="digit3">
+          <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit3TouchInitiated"/>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit3TouchReleased"/>
+          </Events>
+        </Component>
+        <Component class="Clock.Digit" name="digit4">
+          <Events>
+            <EventHandler event="touchInitiated" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit4TouchInitiated"/>
+            <EventHandler event="touchReleased" listener="bgi.TouchListener" parameters="bgi.TouchEvent" handler="digit4TouchReleased"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

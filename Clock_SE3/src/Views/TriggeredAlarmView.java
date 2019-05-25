@@ -2,9 +2,10 @@ package Views;
 
 import Clock.Digit;
 import Clock.TestClock;
-
+import java.io.*;
+import sun.audio.*;
 /**
- * @author Sam
+ * @author Sam, Owen
  * 
  * The actual alarm shown when an alarm is going off.
  */
@@ -62,8 +63,63 @@ public class TriggeredAlarmView extends ClockView {
        // TODO: toggle between showing the time and ALARM on display
        //       - could use the fact that update() is called once per second
        //       - maybe add a function for playing sound
+       playSound();
        //       - stop after certain number of seconds
+       stopSound();
     }
+    
+    /**
+     * Stops sound from being played after a period of time.
+     * 
+     */
+    public void stopSound()
+    {
+        Thread soundLoadingThread = new Thread(new Runnable() {
+    public void run() {
+        
+            try {
+                //5000 milliseconds = 5 seconds
+                Thread.sleep(5000);
+                //stop sound
+                AudioPlayer.player.stop(audioStream);
+            } catch (InterruptedException e) {
+                //should never get to this line
+                System.out.println("failed to stop sound");
+            }
+      
+    }
+});
+soundLoadingThread.start();
+       
+    }
+    
+    /**
+     * Plays sound file from Views package
+     */
+    
+    private void playSound() 
+{
+  try
+  {
+    
+    // the sound file must be in the same directory as this class file.
+    inputStream = getClass().getResourceAsStream("Loud-Alarm-Clock.wav");
+    audioStream = new AudioStream(inputStream);
+    //play sound
+    AudioPlayer.player.start(audioStream);
+    
+  }
+  catch (Exception e)
+  {
+      if(inputStream == null)
+      {
+          System.out.println("getResource has failed to get audio file");
+      }
+    
+  }
+}
+    AudioStream audioStream;
+    InputStream inputStream;
     
 }
 
