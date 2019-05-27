@@ -25,7 +25,9 @@ public class SetTimeView extends ClockView {
     
     public SetTimeView(TestClock clock) {
         super(clock);
-        this.clock = clock;
+        newTime = clock.getTime();
+        weekDay = clock.getWeekDay();
+        clockSpeed = clock.getClockSpeed();
     }
     
     /**
@@ -35,102 +37,82 @@ public class SetTimeView extends ClockView {
      */
     
     @Override
-    public void touched(Digit digit, int region) { 
+    public void touched(int digit, int region) { 
         
-    // Check Digit 0
-        if(digit == clock.getDigits()[0]) {
-            switch(region) {
-                
-                // If "Exit" is pressed
-                case 0:
-                    clock.toClockStandby();
-                    return;
-                    
-                // If "Save" is pressed
-                case 10:
-                    // Send current digits to time.
-                    clock.setTime(newTime);
-                    clock.setWeekDay(weekDay);
-                    clock.setClockSpeed(clockSpeed);
+        switch(digit) {
+        // Check Digit 0
+            case 0: {
+                switch(region) {
+                    case 0:     // If "Exit" is pressed
+                        clock.toClockStandby();
+                        return;
+                    case 10:    // If "Save" is pressed
+                        // Send current digits to time.
+                        clock.setTime(newTime);
+                        clock.setWeekDay(weekDay);
+                        clock.setClockSpeed(clockSpeed);
 
-                    // Pass control to clock view
-                    clock.toClockStandby();
-                    return;
-            }          
-        }
-    // Check Digit 1
-        else if(digit == clock.getDigits()[1]) {
-            switch(region) {    
-            
-                // If up is pressed
-                case 1:
-                    newTime = newTime.plusHours(1);
-                    break;
-                
-               // If down is pressed
-                case 9:
-                    newTime = newTime.minusHours(1);
-                    break;
+                        // Pass control to clock view
+                        clock.toClockStandby();
+                        return;
+                }          
             }
-        }
-    // Check Digit 2 (Separator)
-        else if(digit == clock.getDigits()[2]) {
-            switch(region) { 
-                // If Speed is pressed
-                case 0:
-                    // Toggle Speed
-                    if(clockSpeed >= 1000) clockSpeed = 1;
-                    else clockSpeed *= 10;
-                    break;
-
-                // If weekday is pressed (catches regions 2-8)
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                    // Set weekDay based on region
-                    weekDay = region - 2;
-                    break;
+        // Check Digit 1
+            case 1: {
+                switch(region) {    
+                    case 1:     // If minus is pressed
+                        newTime = newTime.plusHours(1);
+                        break;
+                    case 9:     // If minus is pressed
+                        newTime = newTime.minusHours(1);
+                        break;
                 }
+                break;
             }
-    // Check Digit 3
-        else if(digit == clock.getDigits()[3]) {
-            switch(region) {
-
-                // If up is pressed.
-                case 1:
-                    newTime = newTime.plusMinutes(10);
-                    break;
-
-                // If down is pressed.
-                case 9:
-                    newTime = newTime.minusMinutes(10);
-                    break;
+        // Check Digit 2 (Separator)
+            case 2: {
+                switch(region) { 
+                    case 2: // If weekday is pressed (catches regions 2-8)
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                        // Set weekDay based on region
+                        weekDay = region - 2;
+                        break;
+                }
+                break;
             }
-        }
-    // Check Digit 4
-        else if(digit == clock.getDigits()[4]) {
-            switch(region) {
-            
-                // If up is pressed.
-                case 1:
-                    newTime = newTime.plusMinutes(1);
-                    break;
-                    
-                // If down is pressed.
-                case 9:
-                    newTime = newTime.minusMinutes(1);
-                    break;
-                    
-                // If AM/PM is pressed
-                case 10:
-                    //toggle meridian
-                    if(newTime.getHour() < 12) newTime = newTime.plusHours(12);
-                    else newTime = newTime.minusHours(12);
-                    break;
+        // Check Digit 3
+            case 3: {
+                switch(region) {
+                    case 1:     // If minus is pressed
+                        newTime = newTime.plusMinutes(10);
+                        break;
+                    case 9:     // If minus is pressed
+                        newTime = newTime.minusMinutes(10);
+                        break;
+                }
+                break;
+            }
+        // Check Digit 4
+            case 4: {
+                switch(region) {
+                    case 1:     // If minus is pressed
+                        newTime = newTime.plusMinutes(1);
+                        break;
+                    case 9:     // If minus is pressed
+                        newTime = newTime.minusMinutes(1);
+                        break;
+                    case 10:    // If AM/PM is pressed
+                        //toggle meridian
+                        if(newTime.getHour() < 12) newTime = newTime.plusHours(12);
+                        else newTime = newTime.minusHours(12);
+                        break;
+                }
+                break;
             }
         }
         update();
@@ -141,11 +123,8 @@ public class SetTimeView extends ClockView {
      * Initialises the SetTime page interface
      */
     @Override
-    public void show() {   
-        
-        newTime = clock.getTime();
-        weekDay = clock.getWeekDay();
-        clockSpeed = clock.getClockSpeed();
+    public void show() {
+       
         
         // Configure all digits with centre aligned arrows.
         for(Digit d: clock.getDigits()) {
@@ -158,17 +137,21 @@ public class SetTimeView extends ClockView {
         // Clear arrows on separator
         clock.getDigits()[2].clearText();
         clock.getDigits()[2].setChar(' ');
+        
+        // Show title
+        clock.getDigit(2).setText(0, "Set Time");
+        
 
         // Show weekdays
         for(int i = 0; i < DAYS.length; i++) {
-            clock.getDigits()[2].setText(i+2, DAYS[i]);
+            clock.getDigit(2).setText(i+2, DAYS[i]);
         }
 
         // Show Save and Back button
-        clock.getDigits()[0].clearText();
-        clock.getDigits()[0].setText(0, "Exit");
-        clock.getDigits()[0].setText(10, "Save");
-        
+        clock.getDigit(0).clearText();
+        clock.getDigit(0).setText(0, "Exit");
+        clock.getDigit(0).setText(10, "Save");
+       
         // Update display with stored variables
         update();
     }
@@ -184,13 +167,11 @@ public class SetTimeView extends ClockView {
         
         // Clear weekday Selector
         for(int i = 0; i < DAYS.length; i++) {
-            clock.getDigits()[2].setText(i+2, DAYS[i]);
+            clock.getDigit(2).setText(i+2, DAYS[i]);
         }
         // Update weekday selector
-        clock.getDigits()[2].setText(weekDay+2, ">"+DAYS[weekDay]+"<");
-        
-        // Update speed display
-        clock.getDigits()[2].setText(0, clockSpeed + "X Speed");
+        clock.getDigit(2).setText(weekDay+2, ">"+DAYS[weekDay]+"<");
+
         
     }
 }

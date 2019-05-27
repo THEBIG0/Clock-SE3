@@ -22,7 +22,7 @@ public class HelpView extends ClockMenuView {
      * @param region the row of the digit that was touched
      */
     @Override
-    public void touched(Digit digit, int region) {
+    public void touched(int digit, int region) {
         clock.toClockMenu();
     }
     
@@ -36,12 +36,12 @@ public class HelpView extends ClockMenuView {
         // show parent interface
         super.show();
         
-        clock.getDigits()[2].setChar(' ');
+        showSeparator(' ');
         
-        clock.getDigits()[2].setColorSpecific(0, 8);
+        clock.getDigit(2).setColorSpecific(0, 8);
         
         // Show buttons
-        clock.getDigits()[0].setText(0, "Open Settings" );
+        clock.getDigit(0).setText(0, "Open Settings" );
         //clock.getDigits()[2].setText(4, "Hold to set time");
 
         // Update the time and day using parent update method

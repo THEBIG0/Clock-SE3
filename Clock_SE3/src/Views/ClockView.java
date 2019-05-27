@@ -34,11 +34,19 @@ public abstract class ClockView {
     
     /**
      * Handles touch events directed at this View
-     * @param digit the digit that was touched
+     * @param digit the integer index of the digit that was touched
      * @param region the row of the digit that was touched
      */
-    public abstract void touched(Digit digit, int region);
-
+    public abstract void touched(int digit, int region);
+    
+    
+    /**
+     * Handles long press events directed at this View. Currently does not
+     * distinguish between digits, is only for use with TriggeredAlarmView
+     * but can be expanded if necessary.
+     */
+    public void longPress() {}
+    
     /**
      * Initialises the View interface
      */
@@ -48,7 +56,7 @@ public abstract class ClockView {
      * Makes minimal necesary changes, does not redisplay entire View
      */
     public abstract void update();
-    
+
     /**
      * Show specified digits (and char) on each digit, in order from left to right.
      * @param d0 first digit to display
@@ -77,7 +85,7 @@ public abstract class ClockView {
         int minute = time.getMinute();
         String meridian = "";
         
-        if(clock.isTwelveHour()) {
+        if(clock.twelveHour) {
             meridian = hour < 12 ? "AM" : "PM";
             if(hour == 0) hour = 12;
             hour = hour > 12 ? hour-12: hour;

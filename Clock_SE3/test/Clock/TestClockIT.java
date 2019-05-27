@@ -227,30 +227,6 @@ public class TestClockIT {
     fail("The test case is a prototype.");
   }
 
-  /**
-   * Test of setTime method, of class TestClock.
-   */
-  @Test
-  public void testSetTwelveHour() {
-    System.out.println("setTwelveHour");
-    boolean value = true;
-    TestClock instance = new TestClock();
-    instance.setTwelveHour(value);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-  }
-
-  /**
-   * Test of setTime method, of class TestClock.
-   */
-  @Test
-  public void testIsTwelveHour() {
-    System.out.println("setTime");
-    TestClock instance = new TestClock();
-    instance.isTwelveHour();
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-  }
 
 
   /**

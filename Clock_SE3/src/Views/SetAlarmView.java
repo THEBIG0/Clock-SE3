@@ -21,12 +21,12 @@ public class SetAlarmView extends SetTimeView {
      */
     public SetAlarmView(TestClock clock, Alarm a, int alarmNum) {
         super(clock);
-        this.alarmTime = a.time;
+        this.alarmTime = a.getTime();
         this.alarm = a;
         this.alarmNum = alarmNum;
-        this.days = a.days.clone(); // Otherwise it passes the object and ya get duplicate errors
+        this.days = a.getDays(); // Otherwise it passes the object and ya get duplicate errors
+        // (Sam: added alarm get/set methods, no longer returns reference)
     }
-
     
     /**
      * Handles touch events directed at this View
@@ -34,90 +34,80 @@ public class SetAlarmView extends SetTimeView {
      * @param region the row of the digit that was touched
      */
     @Override
-    public void touched(Digit digit, int region) {           
-    // Check Digit 0
-        if(digit == clock.getDigits()[0]) {
-            switch(region) {
-                
-                // If "Exit" is pressed
-                case 0:
-                    clock.toAlarmList();
-                    return;
-                    
-                // If "Save" is pressed
-                case 10:
-                    alarm.updateAlarm(days, alarmTime);
-                    // Pass control to alarm list
-                    clock.toAlarmList();
-                    return;
-            }          
-        }
-    // Check Digit 1
-        else if(digit == clock.getDigits()[1]) {
-            switch(region) {
-                // If up is pressed
-                case 1:
-                    alarmTime = alarmTime.plusHours(1);
-                    break;
-               // If down is pressed
-                case 9:
-                    alarmTime = alarmTime.minusHours(1);
-                    break;
+    public void touched(int digit, int region) {   
+        switch(digit) {
+        // Check Digit 0
+            case 0: {
+                switch(region) {    
+                    case 0:     // If "Exit" is pressed
+                        clock.toAlarmList();
+                        return;
+                    case 10:    // If "Save" is pressed
+                        alarm.updateAlarm(days, alarmTime);
+                        // Pass control to alarm list
+                        clock.toAlarmList();
+                        return;
+                }          
+                break;
             }
-        }
-    // Check Digit 2 (Separator)
-        else if(digit == clock.getDigits()[2]) {
-            switch(region) {
-                // If weekday is pressed (catches regions 2-8)
-                case 2: // Su
-                case 3: // M
-                case 4: // T
-                case 5: // W
-                case 6: // Th
-                case 7: // F
-                case 8: // S
-                    // Set weekDay based on region
-                    toggleSelection(region-2);
-                    break;
-                case 10:
-                    alarm.toggleActive();
+        // Check Digit 1
+            case 1: {
+                switch(region) {
+                    case 1:     // If plus is pressed
+                        alarmTime = alarmTime.plusHours(1);
+                        break;
+                    case 9:     // If minus is pressed
+                        alarmTime = alarmTime.minusHours(1);
+                        break;
                 }
+                break;
             }
-    // Check Digit 3
-        else if(digit == clock.getDigits()[3]) {
-            switch(region) {
-
-                // If up is pressed.
-                case 1:
-                    alarmTime = alarmTime.plusMinutes(10);
-                    break;
-
-                // If down is pressed.
-                case 9:
-                    alarmTime = alarmTime.minusMinutes(10);
-                    break;
+        // Check Digit 2 (Separator)
+            case 2: {
+                switch(region) {
+                    // If weekday is pressed (catches regions 2-8)
+                    case 2: // Su
+                    case 3: // M
+                    case 4: // T
+                    case 5: // W
+                    case 6: // Th
+                    case 7: // F
+                    case 8: // S
+                        // Set weekDays based on region
+                        toggleSelection(region-2);
+                        break;
+                    case 10:
+                        alarm.toggleActive();
+                }
+                break;
             }
-        }
-    // Check Digit 4
-        else if(digit == clock.getDigits()[4]) {
-            switch(region) {
-            
-                // If up is pressed.
-                case 1:
-                    alarmTime = alarmTime.plusMinutes(1);
-                    break;
-                    
-                // If down is pressed.
-                case 9:
-                    alarmTime = alarmTime.minusMinutes(1);
-                    break;
-                    
-                // If AM/PM is pressed
-                case 10:
-                    //toggle meridian
-                    if(alarmTime.getHour() < 12) alarmTime = alarmTime.plusHours(12);
-                    else alarmTime = alarmTime.minusHours(12);
-                    break;
+        // Check Digit 3
+            case 3: {
+                switch(region) {
+                    case 1:     // If plus is pressed
+                        alarmTime = alarmTime.plusMinutes(10);
+                        break;
+                    case 9:     // If minus is pressed
+                        alarmTime = alarmTime.minusMinutes(10);
+                        break;
+                }
+                break;
+            }
+        // Check Digit 4
+            case 4: {
+                switch(region) {
+                    case 1:     // If plus is pressed
+                        alarmTime = alarmTime.plusMinutes(1);
+                        break;
+                    case 9:     // If minus is pressed
+                        alarmTime = alarmTime.minusMinutes(1);
+                        break;
+                    case 10:    // If AM/PM is pressed
+                        if(alarmTime.getHour() < 12) alarmTime = alarmTime.plusHours(12);
+                        else alarmTime = alarmTime.minusHours(12);
+                        break;
+                }
+                break;
             }
         }
         update();
@@ -136,8 +126,11 @@ public class SetAlarmView extends SetTimeView {
         // display same beginning interface as SetTimeView
         super.show();
         
+        // show title
+        clock.getDigit(2).setText(0, "Set Alarm");
+        
          for(int i = 0; i < DAYS.length; i++) {
-            clock.getDigits()[2].setText(i+2, DAYS[i]);
+            clock.getDigit(2).setText(i+2, DAYS[i]);
         }
         String str;
         for(int i = 0; i < DAYS.length; i++){
@@ -145,7 +138,7 @@ public class SetAlarmView extends SetTimeView {
             if(days[i]){
                 str = ">"+DAYS[i]+"<";
             }
-            clock.getDigits()[2].setText(i+2,str); 
+            clock.getDigit(2).setText(i+2,str); 
         }
 
     }
@@ -156,8 +149,6 @@ public class SetAlarmView extends SetTimeView {
      */
     @Override()
     public void update() {
-        // show time on digit display
-        //showTime(alarmTime);
         showSeparator(' ');
         
         // Update time display
@@ -165,7 +156,7 @@ public class SetAlarmView extends SetTimeView {
         
         // Clear weekday Selector
         for(int i = 0; i < DAYS.length; i++) {
-            clock.getDigits()[2].setText(i+2, DAYS[i]);
+            clock.getDigit(2).setText(i+2, DAYS[i]);
         }
         // Update weekday selector
         String str;
@@ -174,10 +165,10 @@ public class SetAlarmView extends SetTimeView {
             if(days[i]){
                 str = ">"+DAYS[i]+"<";
             }
-            clock.getDigits()[2].setText(i+2,str); 
+            clock.getDigit(2).setText(i+2,str); 
         }
         String activeText = alarm.active ? "Disable" : "Enable";
-        clock.getDigits()[2].setText(10, activeText);
+        clock.getDigit(2).setText(10, activeText);
     }
     
 }

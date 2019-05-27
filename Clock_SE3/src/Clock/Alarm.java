@@ -17,22 +17,11 @@ public class Alarm {
         "F",    "S",
     };
     
-    public LocalTime time;
-    public boolean[] days = new boolean[7];
+    LocalTime time;
+    boolean[] days = new boolean[7];
     public boolean active = false;
-    
-    private Alarm(){}
-    
-    //constructor for alarm with one day
-    public Alarm(int day, LocalTime time) {
-        this(new boolean[7], time);
-        days[day] = true;
-        this.time = time;
-    }
-    
-    // constructor with alarm on multiple days
+   
     public Alarm(boolean[] days, LocalTime time) {
-        this();
         this.days = days;
         this.time = time;
     }
@@ -77,6 +66,14 @@ public class Alarm {
         active = !active;
     }
     
+    public LocalTime getTime() {
+        return this.time;
+    }
+    
+    public boolean[] getDays() {
+        return this.days;
+    }
+   
     public void updateAlarm(boolean days[], LocalTime alarmTime){
         this.days = days;
         this.time = alarmTime;

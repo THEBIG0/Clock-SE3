@@ -23,7 +23,7 @@ public class ClockStandbyView extends ClockView {
      * @param region the row of the digit that was touched
      */
     @Override
-    public void touched(Digit digit, int region) {
+    public void touched(int digit, int region) {
         clock.toClockMenu();
     }
     
@@ -56,7 +56,7 @@ public class ClockStandbyView extends ClockView {
         showTime(clock.getTime());
         
         // show weekday on correct digit
-        clock.getDigits()[0].setText(10, DAYS[clock.getWeekDay()]);
+        clock.getDigit(0).setText(10, DAYS[clock.getWeekDay()]);
         
         char sep = clock.getTime().getSecond()%2==0 ? ' ' : ':';
         

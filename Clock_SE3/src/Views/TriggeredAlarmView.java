@@ -9,7 +9,18 @@ import sun.audio.*;
  * 
  * The actual alarm shown when an alarm is going off.
  */
-public class TriggeredAlarmView extends ClockView {
+public class TriggeredAlarmView extends ClockStandbyView{
+    
+    boolean toggle = true;
+    AudioStream audioStream;
+    Thread soundLoadingThread;
+    
+    int savedClockSpeed;
+    
+    int repeatSound = 0;
+    
+    int heldDigit;
+    int heldTime = -1;
     
     /**
      * Creates new View
@@ -17,6 +28,10 @@ public class TriggeredAlarmView extends ClockView {
      */
     public TriggeredAlarmView(TestClock clock) {
         super(clock);
+        initSound();
+        playSound();
+        savedClockSpeed = clock.getClockSpeed();
+        clock.setClockSpeed(1);
     }
     
     /**
@@ -25,36 +40,34 @@ public class TriggeredAlarmView extends ClockView {
      * @param region the row of the digit that was touched
      */
     @Override
-    public void touched(Digit digit, int region) {
-        //Stop alarm if screen is touched.
-        //      Hold for snooze can be added after.
-        AudioPlayer.player.stop(audioStream);
+    public void touched(int digit, int region) {
+        // Snooze alarm if screen is touched.
+        // Only completes if alarm can be snoozed
+        if(clock.snooze()) {
+            stopSound();
+            clock.setClockSpeed(savedClockSpeed);
+            clock.toClockStandby();
+        } else {
+            clock.getDigit(2).setText(0, "Snooze");
+            clock.getDigit(2).setText(1, "Disabled");
+        }
     }
     
+    /**
+     * start long press
+     */
+    public void longPress() {
+        heldTime = 0;
+    }
+
     /**
      * Initialises the View interface
      */
     @Override
     public void show() {
-        
-        // Clear all text and set alignment
-        for(Digit d: clock.getDigits()) {
-            d.clearText();
-            d.setTextAlignment(0);
-            d.setChar(' ');
-        }
-        clock.getDigits()[0].setChar('a');
-        clock.getDigits()[1].setChar('l');
-        clock.getDigits()[2].setChar('a');
-        clock.getDigits()[3].setChar('r');
-        clock.getDigits()[4].setChar('m');
-        //clock.setClockSpeed(0);
-        //plays Sound
-        playSound();
-        //stops Sound after period of time
-        stopSound();
-        // TODO: Show day of week during alarm
-        
+        super.show();
+        clock.getDigit(0).setText(10, DAYS[clock.getWeekDay()]);
+        showAlarm();
     }
 
     /**
@@ -63,66 +76,90 @@ public class TriggeredAlarmView extends ClockView {
      */
     @Override()
     public void update() {
-       // TODO: toggle between showing the time and ALARM on display
-       //       - could use the fact that update() is called once per second
-       //       - maybe add a function for playing sound
-       //playSound();
-       //       - stop after certain number of seconds
-       //stopSound();
-    }
-    
-    /**
-     * Stops sound from being played after a period of time.
-     * 
-     */
-    public void stopSound()
-    {
-        Thread soundLoadingThread = new Thread(new Runnable() {
-    public void run() {
         
-            try {
-                //5000 milliseconds = 5 seconds
-                Thread.sleep(5000);
-                //stop sound
-                AudioPlayer.player.stop(audioStream);
-            } catch (InterruptedException e) {
-                //should never get to this line
-                System.out.println("failed to stop sound");
+        // alarm sound needs to be manually repeated
+        if(repeatSound > 14) {
+            repeatSound = 0;
+            stopSound();
+            initSound();
+            playSound();
+        } else repeatSound++;
+        
+        // flash time and ALARM
+        if(toggle) {
+            showSeparator(':');
+            showTime(clock.getTime());
+        }
+        else showAlarm();   
+        toggle = !toggle;
+        
+        
+        // hold for alarm cancel
+        if (heldTime != -1) {
+            heldTime++;
+            // Cancel if held for 3 seconds
+            if(heldTime > 2){
+                stopSound();
+                clock.setClockSpeed(savedClockSpeed);
+                clock.toClockStandby();
             }
-      
-    }
-});
-soundLoadingThread.start();
-       
+        }
+
+
     }
     
     /**
-     * Plays sound file from Views package
+     * Display ALARM on digits
      */
+    private void showAlarm() {
+        clock.getDigits()[0].setChar('A');
+        clock.getDigits()[1].setChar('L');
+        clock.getDigits()[2].setChar('A');
+        clock.getDigits()[3].setChar('R');
+        clock.getDigits()[4].setChar('M');
+    }
     
-    private void playSound() 
-{
-  try
-  {
     
-    // the sound file must be in the same directory as this class file.
-    inputStream = getClass().getResourceAsStream("Loud-Alarm-Clock.wav");
-    audioStream = new AudioStream(inputStream);
-    //play sound
-    AudioPlayer.player.start(audioStream);
+    /**
+     * Initialise audio stream
+     */
+    public void initSound() {
+        InputStream inputStream = null;
+        try {
+            // the sound file must be in the same directory as this class file.
+            inputStream = clock.getClass().getResourceAsStream("Loud-Alarm-Clock.wav");
+            audioStream = new AudioStream(inputStream);
+        }
+        catch (Exception e) {
+            if(inputStream == null) {
+                System.out.println("getResource failed to get audio file");
+            }
+        }
+    }
     
-  }
-  catch (Exception e)
-  {
-      if(inputStream == null)
-      {
-          System.out.println("getResource has failed to get audio file");
-      }
-    
-  }
-}
-    AudioStream audioStream;
-    InputStream inputStream;
-    
-}
+    /**
+     * Play audio stream
+     */
+    public void playSound() {
+        try {
+            AudioPlayer.player.start(audioStream);
+        }
+        catch (Exception e) {
+            System.out.println("Start audio failed");
+        }   
+    }
 
+    /**
+     * Stop audio stream
+     */
+    public void stopSound() {
+        try {
+            AudioPlayer.player.stop(audioStream);
+        }
+        catch (Exception e) {
+            System.out.println("Stop audio failed");
+        }    
+    }
+
+}
+    

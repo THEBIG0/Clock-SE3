@@ -19,10 +19,18 @@ import java.util.ArrayList;
  */
 public class TestClock extends javax.swing.JFrame { 
     
+    //Basic clock variables
     int weekDay;
     LocalTime time;
     Timer timer;    
-    boolean twelveHour = true;
+    public boolean twelveHour = true;
+    // boolean can be safely public
+    
+    //Alarm and snooze variables
+    int timesSnoozed;
+    int snoozeTimer;
+    int maxSnoozes = 3;
+    int snoozeMinutes = 7;
     ArrayList<Alarm> alarms = new ArrayList<>();
     
     // Abstract class ClockView is placeholder variable
@@ -55,7 +63,14 @@ public class TestClock extends javax.swing.JFrame {
     private void runEverySecond(){
         incrementTime();
         currentView.update();
-        if(time.getSecond() % 10 == 0) pollAlarms();
+        
+        if(time.getSecond() == 0) pollAlarms();
+        
+        if(snoozeTimer > 0) snoozeTimer++;
+        if(snoozeTimer > snoozeMinutes * 60) {
+            snoozeTimer = 0;
+            toTriggeredAlarm();
+        }
     }
     
     /**
@@ -114,12 +129,24 @@ public class TestClock extends javax.swing.JFrame {
         for(Alarm a: alarms) {
             if(a.check(time, weekDay)) {
                 toTriggeredAlarm();
+                timesSnoozed = 0;
                 return;
             }
         }
     }
     
+    public boolean snooze() {
+        if(timesSnoozed <= maxSnoozes) {
+            snoozeTimer = 1;
+            timesSnoozed++;
+            return true;
+        }
+        return false;
+    }
+    
+    
     // <editor-fold defaultstate="collapsed" desc="Getters and Setters.">    
+    
     
      /**
      * Adjust the color scheme for all the digits globally.
@@ -131,7 +158,7 @@ public class TestClock extends javax.swing.JFrame {
             d.setColor(color);
         }
     }
-    
+            
     /**
      * Get the enum corresponding to the current color scheme
      * @return 
@@ -153,6 +180,14 @@ public class TestClock extends javax.swing.JFrame {
             digit4,
         };
         return darr;
+    }
+    
+    /**
+     * @return Digit shown in clock, indexed in order from left to right.
+     * @param index the digit to get.
+     */
+    public Digit getDigit(int index) {
+        return getDigits()[index];
     }
     
     /**
@@ -201,21 +236,6 @@ public class TestClock extends javax.swing.JFrame {
     }
     
     /**
-     * Set the clock display to either 12 or 24 hour
-     * @param value set true for 12-hour, false for 24-hour
-     */
-    public void setTwelveHour(boolean value) {
-        twelveHour = value;
-    }
-    
-    /**
-     * @return true if the clock is in 12-hour mode.
-     */
-    public boolean isTwelveHour() {
-        return twelveHour;
-    }
-    
-    /**
      *
      * @return
      */
@@ -246,19 +266,18 @@ public class TestClock extends javax.swing.JFrame {
         weekDay = day;
         weekDay--; // Day is 1 indexed, we use 0 indexed so decrement one.
         
-        timer = new Timer(1000, (ActionEvent evt) -> {
+        timer = new Timer(ONE_SECOND, (ActionEvent evt) -> {
             runEverySecond();
         });
         timer.start();
+      
     }
 
     private void initAlarms(){
         boolean  temp[] = {true, true, true, true, true, true, true};
         for(int i = 0; i < 10; i++){
             //alarms.add(new Alarm(0, LocalTime.parse("06:00")));
-       alarms.add(new Alarm(temp, LocalTime.parse("06:00")));
-            
-            
+            alarms.add(new Alarm(temp, LocalTime.parse("06:00")));
         }
     }
     
@@ -369,34 +388,34 @@ public class TestClock extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Event handlers">
     private void digit0TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit0TouchInitiated
-//        currentView.touched(evt); 
+        currentView.longPress(); 
     }//GEN-LAST:event_digit0TouchInitiated
     private void digit0TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit0TouchReleased
-        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
+        currentView.touched(0, evt.getTouched()); 
     }//GEN-LAST:event_digit0TouchReleased
     private void digit1TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit1TouchInitiated
-//        currentView.touched(evt); 
+        currentView.longPress(); 
     }//GEN-LAST:event_digit1TouchInitiated
     private void digit1TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit1TouchReleased
-        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
+        currentView.touched(1, evt.getTouched()); 
     }//GEN-LAST:event_digit1TouchReleased
     private void digit2TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit2TouchInitiated
-//        currentView.touched(evt); 
+        currentView.longPress(); 
     }//GEN-LAST:event_digit2TouchInitiated
     private void digit2TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit2TouchReleased
-        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
+        currentView.touched(2, evt.getTouched()); 
     }//GEN-LAST:event_digit2TouchReleased
     private void digit3TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit3TouchInitiated
-//        currentView.touched(evt); 
+        currentView.longPress(); 
     }//GEN-LAST:event_digit3TouchInitiated
     private void digit3TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit3TouchReleased
-        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
+        currentView.touched(3, evt.getTouched()); 
     }//GEN-LAST:event_digit3TouchReleased
     private void digit4TouchInitiated(bgi.TouchEvent evt) {//GEN-FIRST:event_digit4TouchInitiated
-//        currentView.touched(evt); 
+        currentView.longPress(); 
     }//GEN-LAST:event_digit4TouchInitiated
     private void digit4TouchReleased(bgi.TouchEvent evt) {//GEN-FIRST:event_digit4TouchReleased
-        currentView.touched((Digit) evt.getSource(), evt.getTouched()); 
+        currentView.touched(4, evt.getTouched()); 
     }//GEN-LAST:event_digit4TouchReleased
     // </editor-fold> 
        
@@ -451,5 +470,6 @@ public class TestClock extends javax.swing.JFrame {
     private Clock.Digit digit4;
     private javax.swing.JPanel digitCell;
     // End of variables declaration//GEN-END:variables
-
+    final int ONE_SECOND = 1000;
+    
 }

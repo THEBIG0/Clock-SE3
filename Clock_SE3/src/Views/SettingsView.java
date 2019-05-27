@@ -13,6 +13,7 @@ import Clock.*;
 
 public class SettingsView extends ClockView {
     TestClock.colorScheme colors;
+    int clockSpeed;
     
     /**
      * Creates new View
@@ -20,6 +21,7 @@ public class SettingsView extends ClockView {
      */
     public SettingsView(TestClock clock) {
         super(clock);
+        clockSpeed = clock.getClockSpeed();
     }
     
     /**
@@ -28,30 +30,44 @@ public class SettingsView extends ClockView {
      * @param region the row of the digit that was touched
      */
     @Override
-    public void touched(Digit digit, int region){
+    public void touched(int digit, int region){
         
+        switch(digit) {
     // Check Digit 0
-        if(digit == clock.getDigits()[0]){
-            
-            switch(region) {
-                //Exit button pressed
-                case 0:
-                    clock.toClockMenu();
-                    return;
-            }
+            case 0: {
+                switch(region) {
+                    case 0:     //Exit button pressed
+                        clock.setClockSpeed(clockSpeed);
+                        clock.toClockMenu();
+                        return;
+                }
+            break;
         }
     // Check Digit 1
-        else if(digit == clock.getDigits()[1]){
-            switch(region){
-                // Hacker pressed
-                case 3:
-                    clock.setColorScheme(colors.HACKER);
-                    break;
-                // Slate pressed
-                case 4: 
-                    clock.setColorScheme(colors.SLATE);
-                    break;
-            }   
+            case 1: {
+                switch(region){
+                    case 3:     // Hacker pressed
+                        clock.setColorScheme(colors.HACKER);
+                        break;
+                    case 4:     // Slate pressed
+                        clock.setColorScheme(colors.SLATE);
+                        break;
+                }  
+            break;
+            }
+    // Check Digit 2
+            case 3: {
+                switch(region) {
+                    case 3:     //12-hour pressed
+                        clock.twelveHour = !clock.twelveHour;
+                        break;
+                    case 6:     // If Speed is pressed
+                        if(clockSpeed >= 1000) clockSpeed = 1;
+                        else clockSpeed *= 10;
+                        break;
+                }
+            break;
+            }
         }
         update();
     }
@@ -69,17 +85,23 @@ public class SettingsView extends ClockView {
         }
         
         // Add title text
-        clock.getDigits()[2].setText(0, "Settings");
-        clock.getDigits()[1].setText(2, "Colours:"); // Auto wraps to new line
+        clock.getDigit(2).setText(0, "Settings");
+        clock.getDigit(1).setText(2, "Colours:"); // Auto wraps to new line
+        clock.getDigit(3).setText(2, "Clock:");
+        clock.getDigit(3).setText(5, "Speed:");
+        
+        
         
         // Exit button
-        clock.getDigits()[0].setText(0,"Exit");
+        clock.getDigit(0).setText(0,"Exit");
         
         // Color Scheme 1 Button
-        clock.getDigits()[1].setTextAlignment(0);
-        clock.getDigits()[1].setText(3, "  Hacker");
+        clock.getDigit(1).setTextAlignment(0);
+        clock.getDigit(3).setTextAlignment(0);
+        clock.getDigit(1).setText(3, "  Hacker");
         // Color Scheme 2 Button
-        clock.getDigits()[1].setText(4, "  Slate");
+        clock.getDigit(1).setText(4, "  Slate");
+        
         update();
     }
     
@@ -88,6 +110,12 @@ public class SettingsView extends ClockView {
      */
     @Override
     public void update() {
-        
+        if(clock.twelveHour) {
+            clock.getDigit(3).setText(3, "  12-Hour");
+        } else {
+            clock.getDigit(3).setText(3, "  24-Hour");
+        }
+        clock.getDigit(3).setText(6, "  " + clockSpeed + "X");
+         
     }
 }

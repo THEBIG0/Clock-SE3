@@ -24,36 +24,39 @@ public class ClockMenuView extends ClockStandbyView {
      * @param region the row of the digit that was touched
      */
     @Override
-    public void touched(Digit digit, int region) {
+    public void touched(int digit, int region) {
         
-    // Check Digit 0
-        if(digit == clock.getDigits()[0]) {
+    switch(digit) {
+    // Check digit 0    
+        case 0:
             switch(region) {
                 case 0:
                     clock.toSettings();
                     return;
             }
-        }
-    // Check Digit 2
-        else if(digit == clock.getDigits()[2]) {
-            switch(region){
+            break;
+    // Check digit 2
+        case 2:
+            switch(region) {
                 case 0:
                     clock.toSetTime();
                     return;                    
-                default:
+                case 10:
                     clock.toAlarmList();
                     return;
             }
-
-        }
-    // Check Digit 4
-        else if(digit == clock.getDigits()[4] && region == 0) {
-            clock.toHelp();
-            return;
-        }
-
-        clock.toClockStandby();
+            break;
+    // Check digit 4
+        case 4:
+            switch(region) {
+                case 0:
+                    clock.toHelp();
+                    return; 
+            }
+        default:
+            clock.toClockStandby();
     }
+}
     
     /**
      * Initialises the View interface
@@ -64,14 +67,13 @@ public class ClockMenuView extends ClockStandbyView {
         super.show();
 
         // Show buttons
-        clock.getDigits()[0].setText(0, "Settings" );
-        clock.getDigits()[2].setText(0, "Set Time" );
+        clock.getDigit(0).setText(0, "Settings" );
+        clock.getDigit(2).setText(0, "Set Time" );
 
         // Show help button
-        clock.getDigits()[4].setText(0, "?");
+        clock.getDigit(4).setText(0, "?");
         
-        
-        clock.getDigits()[2].setText(10, "Set Alarm");
+        clock.getDigit(2).setText(10, "Set Alarm");
         
         
         // Update the time and day using parent update method
