@@ -74,7 +74,7 @@ public class AlarmListView extends ClockView {
         for(Alarm a : clock.getAlarms()){
             
 //            System.out.println("\n a " + a.toString());
-            clock.getDigit(digitNum).setText(offset, a.toString()); 
+            clock.getDigit(digitNum).setText(offset, a.toString(clock.twelveHour)); 
             digitNum++;
             
             if(digitNum >= 5){

@@ -44,12 +44,18 @@ public class Alarm {
         );
     }
     
-    @Override
-    public String toString(){ 
+  //  @Override
+    public String toString(boolean isTwelveHour){ 
+        String timeStr;
+        if(isTwelveHour){
         // Format in 12 hour
-        String timeStr = time.format(DateTimeFormatter.ofPattern("hh:mma"));
-        String str = "" + timeStr + "\n";
+            timeStr = time.format(DateTimeFormatter.ofPattern("hh:mma"));
+        }else{
+            timeStr = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+        }
         
+        String str = "" + timeStr + "\n";
+       
         if(active){
             str = ">" + timeStr + "<\n";
         }
