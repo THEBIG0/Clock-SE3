@@ -55,6 +55,7 @@ public class TriggeredAlarmView extends ClockStandbyView{
         } else {
             clock.getDigit(2).setText(0, "Snooze");
             clock.getDigit(2).setText(1, "Disabled");
+            heldTime = -1;
         }
     }
     
