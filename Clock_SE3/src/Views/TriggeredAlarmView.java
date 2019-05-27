@@ -115,6 +115,7 @@ public class TriggeredAlarmView extends ClockStandbyView{
                 stopSound();
                 clock.setClockSpeed(savedClockSpeed);
                 clock.toClockStandby();
+                clock.setColorScheme(TestClock.colorScheme.HACKER); //resets color after alarm is cancelled
             }
         }
 
