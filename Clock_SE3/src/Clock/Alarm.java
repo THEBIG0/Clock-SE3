@@ -66,6 +66,10 @@ public class Alarm {
         active = !active;
     }
     
+    public void setActive(boolean bool){
+        active = bool;
+    }
+    
     public LocalTime getTime() {
         return this.time;
     }

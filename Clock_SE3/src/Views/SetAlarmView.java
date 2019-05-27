@@ -24,8 +24,8 @@ public class SetAlarmView extends SetTimeView {
         this.alarmTime = a.getTime();
         this.alarm = a;
         this.alarmNum = alarmNum;
-        this.days = a.getDays(); // Otherwise it passes the object and ya get duplicate errors
-        // (Sam: added alarm get/set methods, no longer returns reference)
+        this.days = a.getDays().clone();
+        this.alarm.setActive(true);
     }
     
     /**

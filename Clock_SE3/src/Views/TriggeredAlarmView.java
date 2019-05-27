@@ -12,6 +12,9 @@ import sun.audio.*;
 public class TriggeredAlarmView extends ClockStandbyView{
     
     boolean toggle = true;
+    boolean colorFlash = true;
+    
+    TestClock.colorScheme oldColorScheme = null;
     AudioStream audioStream;
     Thread soundLoadingThread;
     
@@ -30,6 +33,7 @@ public class TriggeredAlarmView extends ClockStandbyView{
         super(clock);
         initSound();
         playSound();
+        oldColorScheme = clock.getColorScheme();
         savedClockSpeed = clock.getClockSpeed();
         clock.setClockSpeed(1);
     }
@@ -45,6 +49,7 @@ public class TriggeredAlarmView extends ClockStandbyView{
         // Only completes if alarm can be snoozed
         if(clock.snooze()) {
             stopSound();
+            clock.setColorScheme(oldColorScheme);
             clock.setClockSpeed(savedClockSpeed);
             clock.toClockStandby();
         } else {
@@ -76,6 +81,13 @@ public class TriggeredAlarmView extends ClockStandbyView{
      */
     @Override()
     public void update() {
+        // Toggle the color scheme for a 'flash' effect.
+        if(colorFlash){
+            clock.setColorScheme(TestClock.colorScheme.WHITEBLACK);
+        }else{
+            clock.setColorScheme(TestClock.colorScheme.BLACKWHITE);
+        }
+        colorFlash = !colorFlash;
         
         // alarm sound needs to be manually repeated
         if(repeatSound > 14) {
