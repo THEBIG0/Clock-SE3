@@ -26,35 +26,36 @@ public class ClockMenuView extends ClockStandbyView {
     @Override
     public void touched(int digit, int region) {
         
-    switch(digit) {
-    // Check digit 0    
-        case 0:
-            switch(region) {
-                case 0:
-                    clock.toSettings();
-                    return;
-            }
-            break;
-    // Check digit 2
-        case 2:
-            switch(region) {
-                case 0:
-                    clock.toSetTime();
-                    return;                    
-                case 10:
-                    clock.toAlarmList();
-                    return;
-            }
-            break;
-    // Check digit 4
-        case 4:
-            switch(region) {
-                case 0:
-                    clock.toHelp();
-                    return; 
-            }
-        default:
-            clock.toClockStandby();
+        switch(digit) {
+        // Check digit 0    
+            case 0:
+                switch(region) {
+                    case 0:
+                        clock.toSettings();
+                        return;
+                }
+                break;
+        // Check digit 2
+            case 2:
+                switch(region) {
+                    case 0:
+                        clock.toSetTime();
+                        return;                    
+                    case 10:
+                        clock.toAlarmList();
+                        return;
+                }
+                break;
+        // Check digit 4
+            case 4:
+                switch(region) {
+                    case 0:
+                        clock.toHelp();
+                        return; 
+                }
+                break;
+        }
+        clock.toClockStandby();
     }
 }
     
