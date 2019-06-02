@@ -17,10 +17,7 @@ import org.junit.runners.Suite;
  * @author 
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses(
-{
-  Clock.DigitIT.class, Clock.TestClockIT.class, Clock.TestClockDigitIT.class
-})
+@Suite.SuiteClasses(Clock.DigitIT.class)
 public class ClockITSuite {
 
   @BeforeClass

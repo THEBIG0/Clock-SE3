@@ -11,16 +11,14 @@ import java.time.LocalTime;
  * update() methods must be overridden when extended.
  * 
  * Current subclass structure:
- * PageView
+ * ClockView
  * |   SettingsView
  * |   AlarmListView
- * |   TriggeredAlarmView
- * |   ClockView
+ * |   ClockStandbyView
  * |   |   ClockMenuView
- * |   |   |   HelpView
+ * |   |   TriggeredAlarmView
  * |   SetTimeView
  * |   |   SetAlarmsView
- * 
  * 
  */
 

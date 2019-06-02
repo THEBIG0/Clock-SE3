@@ -46,17 +46,8 @@ public class ClockMenuView extends ClockStandbyView {
                         return;
                 }
                 break;
-        // Check digit 4
-            case 4:
-                switch(region) {
-                    case 0:
-                        clock.toHelp();
-                        return; 
-                }
-                break;
         }
         clock.toClockStandby();
-    }
 }
     
     /**
@@ -70,12 +61,7 @@ public class ClockMenuView extends ClockStandbyView {
         // Show buttons
         clock.getDigit(0).setText(0, "Settings" );
         clock.getDigit(2).setText(0, "Set Time" );
-
-        // Show help button
-        clock.getDigit(4).setText(0, "?");
-        
         clock.getDigit(2).setText(10, "Set Alarm");
-        
         
         // Update the time and day using parent update method
         update();

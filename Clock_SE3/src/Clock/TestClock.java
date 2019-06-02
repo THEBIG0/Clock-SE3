@@ -24,7 +24,7 @@ public class TestClock extends javax.swing.JFrame {
     LocalTime time;
     Timer timer;    
     public boolean twelveHour = true;
-    // boolean can be safely public
+    // can be safely public without get/set
     
     //Alarm and snooze variables
     int timesSnoozed;
@@ -84,10 +84,6 @@ public class TestClock extends javax.swing.JFrame {
         currentView = new ClockMenuView(this);
         currentView.show();
     }
-    public void toHelp() {
-        currentView = new HelpView(this);
-        currentView.show();
-    }
     public void toTriggeredAlarm() {
         currentView = new TriggeredAlarmView(this);
         currentView.show();
@@ -135,6 +131,10 @@ public class TestClock extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Snoozes the current alarm if it has not been snoozed more than 4 times
+     * @return true if the snooze is successful
+     */
     public boolean snooze() {
         if(timesSnoozed <= maxSnoozes) {
             snoozeTimer = 1;

@@ -61,18 +61,9 @@ public class TriggeredAlarmView extends ClockStandbyView{
     /**
      * start long press
      */
+    @Override
     public void longPress() {
         heldTime = 0;
-    }
-
-    /**
-     * Initialises the View interface
-     */
-    @Override
-    public void show() {
-        super.show();
-        clock.getDigit(0).setText(10, DAYS[clock.getWeekDay()]);
-        showAlarm();
     }
 
     /**
@@ -81,6 +72,9 @@ public class TriggeredAlarmView extends ClockStandbyView{
      */
     @Override()
     public void update() {
+        
+        //update using clockstandbyview
+        super.update();
 
         // alarm sound needs to be manually repeated
         if(repeatSound > 14) {
