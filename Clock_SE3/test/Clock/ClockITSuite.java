@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 
 /**
  *
- * @author JustT
+ * @author 
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
